@@ -109,6 +109,17 @@ public class CreateAccount extends AppCompatActivity {
 
     }
 
+    @Override
+    public void onStart() {
+        super.onStart();
+
+        // Check auth on Activity start
+        if (mAuth.getCurrentUser() != null) {
+            startActivity(new Intent(CreateAccount.this, UserHome.class));
+            finish();
+        }
+    }
+
     private void onAuthSuccess(FirebaseUser user, String username, String name) {
         writeNewUser(user.getUid(), name, username, user.getEmail());
         startActivity(new Intent(CreateAccount.this, UserHome.class));
