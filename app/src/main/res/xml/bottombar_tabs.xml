@@ -1,0 +1,17 @@
+<tabs>
+    <tab
+        id="@+id/tab_dashboard"
+        icon="@drawable/bar_dashboard"/>
+    <tab
+        id="@+id/tab_surveys"
+        icon="@drawable/bar_surveys"/>
+    <tab
+        id="@+id/tab_commitments"
+        icon="@drawable/bar_commitments"/>
+    <tab
+        id="@+id/tab_team"
+        icon="@drawable/bar_team"/>
+    <tab
+        id="@+id/tab_notifications"
+        icon="@drawable/bar_notifications"/>
+</tabs>
