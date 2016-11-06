@@ -14,6 +14,11 @@ import android.widget.Toast;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import com.firebase.client.Firebase;
+import com.firebase.client.FirebaseError;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -94,17 +99,17 @@ public class CreateAccount extends AppCompatActivity {
 
                 if (no_errors) {
                     mAuth.createUserWithEmailAndPassword(email, password)
-                        .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                            @Override
-                            public void onComplete(@NonNull Task<AuthResult> task) {
-                                if (!task.isSuccessful()) {
-                                    Toast.makeText(context, "An error has ocurred when creating your account",
-                                            Toast.LENGTH_SHORT).show();
-                                } else {
-                                    onAuthSuccess(task.getResult().getUser(), username);
+                            .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                                @Override
+                                public void onComplete(@NonNull Task<AuthResult> task) {
+                                    if (!task.isSuccessful()) {
+                                        Toast.makeText(context, "An error has ocurred when creating your account",
+                                                Toast.LENGTH_SHORT).show();
+                                    } else {
+                                        onAuthSuccess(task.getResult().getUser(), username, name);
+                                    }
                                 }
-                            }
-                        });
+                            });
                 }
             }
         });
