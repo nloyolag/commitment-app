@@ -6,11 +6,16 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.GenericTypeIndicator;
@@ -29,6 +34,7 @@ public class Commitments extends AppCompatActivity {
     private CommitmentList adapter;
     private ArrayList<String> names;
     private ArrayList<String> descriptions;
+    private ArrayList<String> ids;
 
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthListener;
@@ -48,8 +54,9 @@ public class Commitments extends AppCompatActivity {
         commitmentsList = new ArrayList<Commitment>();
         names = new ArrayList<String>();
         descriptions = new ArrayList<String>();
+        ids = new ArrayList<String>();
 
-        mDatabase.child("projects").child(project).child("commitments").addChildEventListener(new ValueEventListener() {
+        mDatabase.child("projects").child(project).child("commitments").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot snapshot) {
                 HashMap<String, Object> commitments = (HashMap<String, Object>) snapshot.getValue();
@@ -67,7 +74,12 @@ public class Commitments extends AppCompatActivity {
                 populateListView();
             }
 
-            // ...
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                Toast.makeText(context, "An error ocurred while loading the commitments",
+                        Toast.LENGTH_SHORT).show();
+            }
+
         });
 
         BottomBar bottomBar = (BottomBar) findViewById(R.id.bottomBar);
@@ -101,6 +113,9 @@ public class Commitments extends AppCompatActivity {
 
     private void populateListView() {
         for (Commitment commitment : commitmentsList) {
+            if (!ids.contains(commitment.id)) {
+                ids.add(commitment.id);
+            }
             if (!names.contains(commitment.name)) {
                 names.add(commitment.name);
             }
@@ -108,25 +123,13 @@ public class Commitments extends AppCompatActivity {
                 descriptions.add(commitment.description);
             }
         }
-        adapter = new CommitmentList(Commitments.this, names, descriptions);
+        adapter = new CommitmentList(Commitments.this, ids, names, descriptions, project);
         commitment_list = (ListView)findViewById(R.id.commitment_list);
         commitment_list.setAdapter(adapter);
 
         // Configure the list view
         ListView listView = (ListView) findViewById(R.id.friends_listview);
         listView.setAdapter(adapter);
-
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent commitment_intent = new Intent(Commitments.this, EditCommitment.class);
-                commitment_intent.putExtra("id", commitmentsList.get(position).id);
-                commitment_intent.putExtra("name", commitmentsList.get(position).name);
-                commitment_intent.putExtra("description", commitmentsList.get(position).description);
-                startActivity(commitment_intent);
-            }
-        });
     }
 
 }
