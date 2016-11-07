@@ -36,6 +36,7 @@ public class EditCommitment extends AppCompatActivity {
     private DatabaseReference mDatabase;
 
     MyApplication context;
+    Intent intent;
 
 
     @Override
@@ -53,6 +54,16 @@ public class EditCommitment extends AppCompatActivity {
         description_field = findViewById(R.id.description);
         id_field = findViewById(R.id.id);
         submit_button = findViewById(R.id.submit);
+
+        intent = getIntent();
+        if (intent != null) {
+            id = intent.getStringExtra("id");
+            name = intent.getStringExtra("name");
+            description = intent.getStringExtra("description");
+            id_field.setText(id);
+            name_field.setText(name);
+            description_field.setText(description);
+        }
 
         submit_button.setOnClickListener(new View.OnClickListener() {
 
