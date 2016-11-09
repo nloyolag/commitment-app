@@ -82,7 +82,7 @@ public class Commitments extends AppCompatActivity {
 
         });
 
-        BottomBar bottomBar = (BottomBar) findViewById(R.id.bottomBar);
+        final BottomBar bottomBar = (BottomBar) findViewById(R.id.bottomBar);
         bottomBar.setDefaultTab(R.id.tab_commitments);
         bottomBar.setOnTabSelectListener(new OnTabSelectListener() {
             @Override
@@ -95,8 +95,6 @@ public class Commitments extends AppCompatActivity {
 
                 }
                 if (tabId == R.id.tab_commitments) {
-                    startActivity(new Intent(getApplicationContext(), Commitments.class));
-
                 }
                 if (tabId == R.id.tab_team) {
                     startActivity(new Intent(getApplicationContext(), Team.class));
@@ -109,6 +107,14 @@ public class Commitments extends AppCompatActivity {
             }
         });
     }
+
+    public void onRestart(){
+        super.onRestart();
+        final BottomBar bottomBar = (BottomBar) findViewById(R.id.bottomBar);
+        bottomBar.setDefaultTab(R.id.tab_commitments);
+    }
+
+
 
 
     private void populateListView() {

@@ -6,11 +6,21 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context="itesm.mx.commitment_app.Surveys">
 
+
     <com.roughike.bottombar.BottomBar
         android:id="@+id/bottomBar"
         android:layout_width="match_parent"
         android:layout_height="60dp"
         android:layout_alignParentBottom="true"
         app:bb_tabXmlResource="@xml/bottombar_tabs" />
+
+    <TextView
+        android:text="Surveys"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/textView5"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="125dp" />
 
 </RelativeLayout>

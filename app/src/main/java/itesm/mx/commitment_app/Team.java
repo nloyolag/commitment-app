@@ -16,31 +16,33 @@ public class Team extends AppCompatActivity {
         setContentView(R.layout.activity_team);
 
 
-        BottomBar bottomBar = (BottomBar) findViewById(R.id.bottomBar);
+        final BottomBar bottomBar = (BottomBar) findViewById(R.id.bottomBar);
         bottomBar.setDefaultTab(R.id.tab_team);
         bottomBar.setOnTabSelectListener(new OnTabSelectListener() {
             @Override
             public void onTabSelected(@IdRes int tabId) {
                 if (tabId == R.id.tab_dashboard) {
-                    startActivity(new Intent(getApplicationContext(), Dashboard.class));
+                    startActivity(new Intent(Team.this, Dashboard.class));
                 }
                 if (tabId == R.id.tab_surveys) {
-                    startActivity(new Intent(getApplicationContext(), Surveys.class));
+                    startActivity(new Intent(Team.this, Surveys.class));
 
                 }
                 if (tabId == R.id.tab_commitments) {
-                    startActivity(new Intent(getApplicationContext(), Commitments.class));
-
+                    startActivity(new Intent(Team.this, Commitments.class));
                 }
-                if (tabId == R.id.tab_team) {
-                    startActivity(new Intent(getApplicationContext(), Team.class));
 
-                }
                 if (tabId == R.id.tab_notifications) {
-                    startActivity(new Intent(getApplicationContext(), Notifications.class));
+                    startActivity(new Intent(Team.this, Notifications.class));
 
                 }
             }
         });
+    }
+
+    protected void onRestart(){
+        super.onRestart();
+        final BottomBar bottomBar = (BottomBar) findViewById(R.id.bottomBar);
+        bottomBar.setDefaultTab(R.id.tab_team);
     }
 }
