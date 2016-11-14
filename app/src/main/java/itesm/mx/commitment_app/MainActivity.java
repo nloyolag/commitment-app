@@ -33,7 +33,7 @@ public class MainActivity extends AppCompatActivity {
         button3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(MainActivity.this, NewProject.class));
+                startActivity(new Intent(MainActivity.this, UserHome.class));
             }
         });
 
