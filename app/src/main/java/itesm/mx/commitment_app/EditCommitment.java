@@ -20,7 +20,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import java.util.UUID;
 
 public class EditCommitment extends AppCompatActivity {
-
+/*
     private String name;
     private String description;
     private String id;
@@ -117,4 +117,5 @@ public class EditCommitment extends AppCompatActivity {
         }
         return false;
     }
+*/
 }

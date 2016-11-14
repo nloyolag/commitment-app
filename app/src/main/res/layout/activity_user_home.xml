@@ -14,6 +14,14 @@
         android:layout_height="wrap_content"
         android:id="@+id/user_home_grid"
         android:numColumns="2">
-
     </GridView>
+
+    <Button
+        android:text="Add Project"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/user_home_grid"
+        android:id="@+id/add_project" />
+
 </RelativeLayout>

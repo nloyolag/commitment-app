@@ -57,6 +57,7 @@ public class NewProject extends AppCompatActivity {
             }
         });
 
+
 //        context = (MyApplication) getApplicationContext();
 //        mDatabase = FirebaseDatabase.getInstance().getReference();
 //

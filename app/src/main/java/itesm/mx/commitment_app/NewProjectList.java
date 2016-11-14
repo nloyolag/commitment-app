@@ -49,8 +49,7 @@ class NewProjectList extends ArrayAdapter<String>{
             }
         });
 */
-        return rowView;
+
+            return rowView;
     }
-
-
 }

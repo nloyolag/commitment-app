@@ -11,7 +11,8 @@ import android.widget.TextView;
 
 /**
  * Created by luis on 10/11/16.
- */;
+ */
+
 class UserHomeGrid extends ArrayAdapter<String> {
     private final Activity context;
     private final String [] projectname;
@@ -33,7 +34,6 @@ class UserHomeGrid extends ArrayAdapter<String> {
 
         ImageView imageView = (ImageView) rowView.findViewById(R.id.imageView_user_home);
         imageView.setImageResource(imageId[position]);
-
 
         return rowView;
     }

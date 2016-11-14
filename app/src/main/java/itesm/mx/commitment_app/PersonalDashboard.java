@@ -35,12 +35,9 @@ public class PersonalDashboard extends Fragment {
     String [] surveys = {"Survey 1", "Survey 2", "Survey 3"};
     int [] surveyProgress = {85, 90, 95};
 
-
-
     public PersonalDashboard() {
         // Required empty public constructor
     }
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,

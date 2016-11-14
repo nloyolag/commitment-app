@@ -55,7 +55,6 @@ public class TeamDashboard extends Fragment {
         return view;
     }
 
-
     public void drawPieChart (PieChart pieChart, int myProgress) {
         List<PieEntry> entries = new ArrayList<>();
         entries.add(new PieEntry(myProgress, 0));

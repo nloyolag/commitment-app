@@ -44,6 +44,4 @@ class DashboardList extends ArrayAdapter<String> {
 
         return rowView;
     }
-
-
 } 

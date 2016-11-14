@@ -71,7 +71,7 @@ public class Commitments extends AppCompatActivity {
                         commitmentsList.add(commitment);
                     }
                 }
-                populateListView();
+//                populateListView();
             }
 
             @Override
@@ -116,7 +116,7 @@ public class Commitments extends AppCompatActivity {
 
 
 
-
+/*
     private void populateListView() {
         for (Commitment commitment : commitmentsList) {
             if (!ids.contains(commitment.id)) {
@@ -137,5 +137,5 @@ public class Commitments extends AppCompatActivity {
         ListView listView = (ListView) findViewById(R.id.friends_listview);
         listView.setAdapter(adapter);
     }
-
+*/
 }

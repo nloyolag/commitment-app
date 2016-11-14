@@ -57,4 +57,5 @@ public class Notifications extends AppCompatActivity {
         final BottomBar bottomBar = (BottomBar) findViewById(R.id.bottomBar);
         bottomBar.setDefaultTab(R.id.tab_notifications);
     }
+
 }

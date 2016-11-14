@@ -45,4 +45,5 @@ class NotificationList extends ArrayAdapter<String> {
 
         return rowView;
     }
+
 }
