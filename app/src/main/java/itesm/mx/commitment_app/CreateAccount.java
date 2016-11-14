@@ -25,6 +25,8 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import org.w3c.dom.Text;
+
 public class CreateAccount extends AppCompatActivity {
 
     private String name;
@@ -55,11 +57,11 @@ public class CreateAccount extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
         mDatabase = FirebaseDatabase.getInstance().getReference();
 
-        name_field = findViewById(R.id.name);
-        username_field = findViewById(R.id.username);
-        password_field = findViewById(R.id.password);
-        email_field = findViewById(R.id.email);
-        submit_button = findViewById(R.id.submit);
+        name_field = (EditText) findViewById(R.id.name);
+        username_field = (EditText) findViewById(R.id.username);
+        password_field = (EditText) findViewById(R.id.password);
+        email_field = (EditText) findViewById(R.id.email);
+        submit_button = (Button) findViewById(R.id.submit);
 
         submit_button.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -97,6 +99,7 @@ public class CreateAccount extends AppCompatActivity {
                     no_errors = false;
                 }
 
+                /*
                 if (no_errors) {
                     mAuth.createUserWithEmailAndPassword(email, password)
                             .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
@@ -111,6 +114,8 @@ public class CreateAccount extends AppCompatActivity {
                                 }
                             });
                 }
+
+                */
             }
         });
 

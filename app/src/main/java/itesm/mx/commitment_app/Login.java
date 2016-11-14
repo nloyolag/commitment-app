@@ -73,7 +73,7 @@ public class Login extends AppCompatActivity implements LoaderCallbacks<Cursor> 
         mAuth = FirebaseAuth.getInstance();
 
         mPasswordView = (EditText) findViewById(R.id.password);
-        mPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+        /*mPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView textView, int id, KeyEvent keyEvent) {
                 if (id == R.id.login || id == EditorInfo.IME_NULL) {
@@ -83,6 +83,7 @@ public class Login extends AppCompatActivity implements LoaderCallbacks<Cursor> 
                 return false;
             }
         });
+        */
 
         Button mEmailSignInButton = (Button) findViewById(R.id.email_sign_in_button);
         mEmailSignInButton.setOnClickListener(new OnClickListener() {
@@ -92,8 +93,8 @@ public class Login extends AppCompatActivity implements LoaderCallbacks<Cursor> 
             }
         });
 
-        mLoginFormView = findViewById(R.id.login_form);
-        mProgressView = findViewById(R.id.login_progress);
+        //mLoginFormView = findViewById(R.id.login_form);
+        //mProgressView = findViewById(R.id.login_progress);
     }
 
     private void populateAutoComplete() {
@@ -309,7 +310,7 @@ public class Login extends AppCompatActivity implements LoaderCallbacks<Cursor> 
         @Override
         protected Boolean doInBackground(Void... params) {
 
-            mAuth.signInWithEmailAndPassword(mEmail, mPassword)
+            /*mAuth.signInWithEmailAndPassword(mEmail, mPassword)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
@@ -322,6 +323,7 @@ public class Login extends AppCompatActivity implements LoaderCallbacks<Cursor> 
                         }
                     }
                 });
+                */
 
             return true;
         }

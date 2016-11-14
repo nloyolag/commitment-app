@@ -95,7 +95,7 @@ public class Commitments extends AppCompatActivity {
 
                 }
                 if (tabId == R.id.tab_commitments) {
-                    startActivity(new Intent(getApplicationContext(), Commitments.class));
+                    //startActivity(new Intent(getApplicationContext(), Commitments.class));
 
                 }
                 if (tabId == R.id.tab_team) {
@@ -128,8 +128,8 @@ public class Commitments extends AppCompatActivity {
         commitment_list.setAdapter(adapter);
 
         // Configure the list view
-        ListView listView = (ListView) findViewById(R.id.friends_listview);
-        listView.setAdapter(adapter);
+        //ListView listView = (ListView) findViewById(R.id.friends_listview);
+        //listView.setAdapter(adapter);
     }
 
 }

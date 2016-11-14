@@ -2,11 +2,14 @@ package itesm.mx.commitment_app;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.media.Image;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -37,11 +40,13 @@ public class CommitmentList extends ArrayAdapter<String> {
         mDatabase = FirebaseDatabase.getInstance().getReference();
     }
 
+
     @Override
     public View getView(int position, final View view, ViewGroup parent) {
+
         LayoutInflater inflater = context.getLayoutInflater();
 
-        View rowView = inflater.inflate(R.layout.commitment_list_adapter, null, true);
+        View rowView = inflater.inflate(R.layout.commitment_list_adapter, parent, false);
 
         TextView idView = (TextView) rowView.findViewById(R.id.id);
         idView.setText(ids.get(position));
@@ -52,16 +57,16 @@ public class CommitmentList extends ArrayAdapter<String> {
         TextView descriptionView = (TextView) rowView.findViewById(R.id.description);
         descriptionView.setText(descriptions.get(position));
 
-        Button editButton = (Button) rowView.findViewById(R.id.edit_button);
-        Button deleteButton = (Button) rowView.findViewById(R.id.delete_button);
+        ImageButton editButton = (ImageButton) rowView.findViewById(R.id.edit_button);
+        ImageButton deleteButton = (ImageButton) rowView.findViewById(R.id.delete_button);
 
         editButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent commitment_intent = new Intent(context, EditCommitment.class);
-                commitment_intent.putExtra("id", v.findViewById(R.id.id));
-                commitment_intent.putExtra("name", v.findViewById(R.id.name));
-                commitment_intent.putExtra("description", v.findViewById(R.id.description));
+                commitment_intent.putExtra("id", v.findViewById(R.id.id).toString());
+                commitment_intent.putExtra("name", v.findViewById(R.id.name).toString());
+                commitment_intent.putExtra("description", v.findViewById(R.id.description).toString());
                 context.startActivity(commitment_intent);
             }
         });
@@ -69,12 +74,11 @@ public class CommitmentList extends ArrayAdapter<String> {
         deleteButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String id = v.findViewById(R.id.id);
-                mDatabase.child("projects").child(project).child("commitments").child(id).removeValue();
+                TextView id = (TextView) v.findViewById(R.id.id);
+                String idString = id.getText().toString();
+                mDatabase.child("projects").child(project).child("commitments").child(idString).removeValue();
             }
         });
-
         return rowView;
     }
-
 }
