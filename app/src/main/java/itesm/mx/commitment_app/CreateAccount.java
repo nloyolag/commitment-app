@@ -60,8 +60,19 @@ public class CreateAccount extends AppCompatActivity {
         name_field = (EditText) findViewById(R.id.name);
         username_field = (EditText) findViewById(R.id.username);
         password_field = (EditText) findViewById(R.id.password);
+        confirm_password_field = (EditText) findViewById(R.id.confirm_password_field);
         email_field = (EditText) findViewById(R.id.email);
         submit_button = (Button) findViewById(R.id.submit);
+
+        TextView sign_in = (TextView) findViewById(R.id.link_login);
+        sign_in.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(CreateAccount.this, Login.class);
+                startActivity(intent);
+            }
+        });
 
         submit_button.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -75,12 +86,12 @@ public class CreateAccount extends AppCompatActivity {
                 Boolean no_errors = true;
 
                 if (!isValidField(name)) {
-                    name_field.setError("Invalid Email");
+                    name_field.setError("Invalid Name");
                     no_errors = false;
                 }
 
                 if (!isValidField(username)) {
-                    username_field.setError("Invalid Email");
+                    username_field.setError("Invalid Username");
                     no_errors = false;
                 }
 
@@ -99,10 +110,9 @@ public class CreateAccount extends AppCompatActivity {
                     no_errors = false;
                 }
 
-                /*
                 if (no_errors) {
                     mAuth.createUserWithEmailAndPassword(email, password)
-                            .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                            .addOnCompleteListener(CreateAccount.this, new OnCompleteListener<AuthResult>() {
                                 @Override
                                 public void onComplete(@NonNull Task<AuthResult> task) {
                                     if (!task.isSuccessful()) {
@@ -115,7 +125,7 @@ public class CreateAccount extends AppCompatActivity {
                             });
                 }
 
-                */
+
             }
         });
 

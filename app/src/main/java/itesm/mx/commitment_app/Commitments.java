@@ -130,7 +130,7 @@ public class Commitments extends AppCompatActivity {
             }
         }
         adapter = new CommitmentList(Commitments.this, ids, names, descriptions, project);
-        commitment_list = (ListView)findViewById(R.id.commitment_list);
+        //commitment_list = (ListView)findViewById(R.id.commitment_list);
         commitment_list.setAdapter(adapter);
 
         // Configure the list view
