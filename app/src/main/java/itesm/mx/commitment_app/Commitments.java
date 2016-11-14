@@ -76,7 +76,7 @@ public class Commitments extends AppCompatActivity {
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
-                Toast.makeText(context, "An error ocurred while loading the commitments",
+                Toast.makeText(context, "An error occurred while loading the commitments",
                         Toast.LENGTH_SHORT).show();
             }
 
@@ -95,8 +95,6 @@ public class Commitments extends AppCompatActivity {
 
                 }
                 if (tabId == R.id.tab_commitments) {
-                    startActivity(new Intent(getApplicationContext(), Commitments.class));
-
                 }
                 if (tabId == R.id.tab_team) {
                     startActivity(new Intent(getApplicationContext(), Team.class));
@@ -128,8 +126,8 @@ public class Commitments extends AppCompatActivity {
         commitment_list.setAdapter(adapter);
 
         // Configure the list view
-        ListView listView = (ListView) findViewById(R.id.friends_listview);
-        listView.setAdapter(adapter);
+        //ListView listView = (ListView) findViewById(R.id.friends_listview);
+        //listView.setAdapter(adapter);
     }
 
 }

@@ -50,10 +50,10 @@ public class EditCommitment extends AppCompatActivity {
 
         project = context.getProject();
 
-        name_field = findViewById(R.id.name);
-        description_field = findViewById(R.id.description);
-        id_field = findViewById(R.id.id);
-        submit_button = findViewById(R.id.submit);
+        //name_field = findViewById(R.id.name);
+        //description_field = findViewById(R.id.description);
+        //id_field = findViewById(R.id.id);
+        //submit_button = findViewById(R.id.submit);
 
         intent = getIntent();
         if (intent != null) {

@@ -43,19 +43,19 @@ public class CommitmentList extends ArrayAdapter<String> {
 
         View rowView = inflater.inflate(R.layout.commitment_list_adapter, null, true);
 
-        TextView idView = (TextView) rowView.findViewById(R.id.id);
-        idView.setText(ids.get(position));
+        //TextView idView = (TextView) rowView.findViewById(R.id.id);
+        //idView.setText(ids.get(position));
 
         TextView nameView = (TextView) rowView.findViewById(R.id.name);
         nameView.setText(names.get(position));
 
-        TextView descriptionView = (TextView) rowView.findViewById(R.id.description);
-        descriptionView.setText(descriptions.get(position));
+        //TextView descriptionView = (TextView) rowView.findViewById(R.id.description);
+        //descriptionView.setText(descriptions.get(position));
 
-        Button editButton = (Button) rowView.findViewById(R.id.edit_button);
-        Button deleteButton = (Button) rowView.findViewById(R.id.delete_button);
+        //Button editButton = (Button) rowView.findViewById(R.id.edit_button);
+        //Button deleteButton = (Button) rowView.findViewById(R.id.delete_button);
 
-        editButton.setOnClickListener(new View.OnClickListener() {
+        /*editButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent commitment_intent = new Intent(context, EditCommitment.class);
@@ -73,6 +73,7 @@ public class CommitmentList extends ArrayAdapter<String> {
                 mDatabase.child("projects").child(project).child("commitments").child(id).removeValue();
             }
         });
+        */
 
         return rowView;
     }

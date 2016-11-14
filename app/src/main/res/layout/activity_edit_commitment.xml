@@ -9,4 +9,53 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="itesm.mx.commitment_app.EditCommitment">
 
+    <android.support.design.widget.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp">
+        <EditText android:id="@+id/name_field"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Commitment Name"
+            android:inputType="text" />
+    </android.support.design.widget.TextInputLayout>
+
+    <android.support.design.widget.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"></android.support.design.widget.TextInputLayout>
+
+    <EditText android:id="@+id/description_field"
+        android:layout_width="match_parent"
+        android:inputType="text"
+        android:hint="Description"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="76dp"
+        android:layout_height="wrap_content" />
+
+    <android.support.v7.widget.AppCompatButton
+        android:id="@+id/submit_button"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:padding="12dp"
+        android:text="Save Commitment"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginBottom="25dp" />
+
+    <Spinner
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="21dp"
+        android:id="@+id/team_project"
+        android:dropDownWidth="match_parent"
+        android:layout_below="@+id/description_field"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+
 </RelativeLayout>
