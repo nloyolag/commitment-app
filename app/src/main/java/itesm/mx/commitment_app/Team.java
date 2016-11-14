@@ -4,17 +4,107 @@ import android.content.Intent;
 import android.support.annotation.IdRes;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.Toast;
 
+import com.firebase.client.Firebase;
+import com.firebase.client.FirebaseError;
+import com.firebase.client.Query;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.roughike.bottombar.BottomBar;
 import com.roughike.bottombar.OnTabSelectListener;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 public class Team extends AppCompatActivity {
+
+//    String new_user;
+//    String project;
+//
+//    EditText new_user_field;
+//    Button submit_new_user_button;
+//
+//    MyApplication context;
+//    private DatabaseReference mDatabase;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_team);
 
+//        new_user_field = findViewById(R.id.new_user);
+//        submit_new_user_button = findViewById(R.id.submit_new_user_button);
+//        context = (MyApplication) getApplicationContext();
+//        project = context.getProject();
+//        mDatabase = FirebaseDatabase.getInstance().getReference();
+//
+//        submit_new_user_button.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                new_user = new_user_field.getText().toString();
+//
+//                Boolean no_errors = true;
+//
+//                if (!isValidEmail(new_user)) {
+//                    new_user_field.setError("Invalid Email");
+//                    no_errors = false;
+//                }
+//
+//                if (no_errors) {
+//
+//                    mDatabase.child("projects").child(project).addListenerForSingleValueEvent(new ValueEventListener() {
+//                        @Override
+//                        public void onDataChange(DataSnapshot dataSnapshot) {
+//                            TeamModel team = dataSnapshot.getValue(TeamModel.class);
+//                            final ArrayList<String> users = team.users;
+//                            mDatabase.child("users").addListenerForSingleValueEvent(new ValueEventListener() {
+//                                @Override
+//                                public void onDataChange(DataSnapshot dataSnapshot) {
+//                                    Map<String, User> users_query = (HashMap<String, User>) dataSnapshot.getValue();
+//                                    String uid = "";
+//                                    for (User user: users_query.values()) {
+//                                        if (user.email.equals(new_user)) {
+//                                            uid = user.id;
+//                                            break;
+//                                        }
+//                                    }
+//                                    if (uid.equals("")) {
+//                                        Toast.makeText(context, "This email does not have an account",
+//                                                Toast.LENGTH_SHORT).show();
+//                                    } else {
+//                                        users.add(uid);
+//                                        mDatabase.child("projects").child(project).child("users").setValue(users);
+//                                        Toast.makeText(context, "User added to project!",
+//                                                Toast.LENGTH_SHORT).show();
+//                                        finish();
+//                                    }
+//                                }
+//
+//                                @Override
+//                                public void onCancelled(DatabaseError databaseError) {
+//
+//                                }
+//                            });
+//                        }
+//
+//                        @Override
+//                        public void onCancelled(DatabaseError databaseError) {
+//
+//                        }
+//                    });
+//                }
+//            }
+//        });
 
         final BottomBar bottomBar = (BottomBar) findViewById(R.id.bottomBar);
         bottomBar.setDefaultTab(R.id.tab_team);
@@ -45,4 +135,13 @@ public class Team extends AppCompatActivity {
         final BottomBar bottomBar = (BottomBar) findViewById(R.id.bottomBar);
         bottomBar.setDefaultTab(R.id.tab_team);
     }
+
+//    private boolean isValidEmail(String email) {
+//        String EMAIL_PATTERN = "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@"
+//                + "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
+//
+//        Pattern pattern = Pattern.compile(EMAIL_PATTERN);
+//        Matcher matcher = pattern.matcher(email);
+//        return matcher.matches();
+//    }
 }
