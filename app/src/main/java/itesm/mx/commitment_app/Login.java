@@ -67,15 +67,26 @@ public class Login extends AppCompatActivity implements LoaderCallbacks<Cursor> 
     private View mLoginFormView;
 
     private Boolean login_success = false;
+    MyApplication context;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+
+        context = (MyApplication) getApplicationContext();
+
         // Set up the login form.
         mEmailView = (EditText) findViewById(R.id.email);
         populateAutoComplete();
         mAuth = FirebaseAuth.getInstance();
+
+        FirebaseUser user = mAuth.getCurrentUser();
+
+        if (user != null) {
+            Intent intent = new Intent(Login.this, UserHome.class);
+            startActivity(intent);
+        }
 
         mPasswordView = (EditText) findViewById(R.id.password);
         /*mPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
