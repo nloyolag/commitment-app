@@ -14,13 +14,14 @@ import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.UUID;
 
 public class EditCommitment extends AppCompatActivity {
-/*
+
     private String name;
     private String description;
     private String id;
@@ -31,8 +32,6 @@ public class EditCommitment extends AppCompatActivity {
     private EditText id_field;
     private Button submit_button;
 
-    private FirebaseAuth mAuth;
-    private FirebaseAuth.AuthStateListener mAuthListener;
     private DatabaseReference mDatabase;
 
     MyApplication context;
@@ -45,15 +44,15 @@ public class EditCommitment extends AppCompatActivity {
         setContentView(R.layout.activity_edit_commitment);
 
         context = (MyApplication) getApplicationContext();
-        mAuth = FirebaseAuth.getInstance();
         mDatabase = FirebaseDatabase.getInstance().getReference();
 
         project = context.getProject();
 
-        name_field = (EditText) findViewById(R.id.name);
+        name_field = (EditText) findViewById(R.id.name_field);
         description_field = (EditText) findViewById(R.id.description);
         id_field = (EditText) findViewById(R.id.id);
-        submit_button = (Button) findViewById(R.id.submit);
+        id_field.setVisibility(View.GONE);
+        submit_button = (Button) findViewById(R.id.submit_button);
 
         intent = getIntent();
         if (intent != null) {
@@ -92,10 +91,10 @@ public class EditCommitment extends AppCompatActivity {
                 if (no_errors) {
                     Commitment commitment = new Commitment(name, description);
                     commitment.setId(id);
-                    mDatabase.child("projects").child(project).child("commitments").child(id).setValue(commitment, new Firebase.CompletionListener() {
+                    mDatabase.child("projects").child(project).child("commitments").child(id).setValue(commitment, new DatabaseReference.CompletionListener() {
                         @Override
-                        public void onComplete(FirebaseError firebaseError, Firebase firebase) {
-                            if (firebaseError != null) {
+                        public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
+                            if (databaseError != null) {
                                 Toast.makeText(context, "An error while submitting the commitment",
                                         Toast.LENGTH_SHORT).show();
                             } else {
@@ -117,5 +116,5 @@ public class EditCommitment extends AppCompatActivity {
         }
         return false;
     }
-*/
+
 }

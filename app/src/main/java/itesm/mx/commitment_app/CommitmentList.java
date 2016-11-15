@@ -42,13 +42,14 @@ public class CommitmentList extends ArrayAdapter<String> {
 
 
     @Override
-    public View getView(int position, final View view, ViewGroup parent) {
+    public View getView(final int position, final View view, ViewGroup parent) {
 
         LayoutInflater inflater = context.getLayoutInflater();
 
         View rowView = inflater.inflate(R.layout.commitment_list_adapter, parent, false);
 
         TextView idView = (TextView) rowView.findViewById(R.id.id);
+        idView.setVisibility(View.GONE);
         idView.setText(ids.get(position));
 
         TextView nameView = (TextView) rowView.findViewById(R.id.name);
@@ -64,9 +65,9 @@ public class CommitmentList extends ArrayAdapter<String> {
             @Override
             public void onClick(View v) {
                 Intent commitment_intent = new Intent(context, EditCommitment.class);
-                commitment_intent.putExtra("id", v.findViewById(R.id.id).toString());
-                commitment_intent.putExtra("name", v.findViewById(R.id.name).toString());
-                commitment_intent.putExtra("description", v.findViewById(R.id.description).toString());
+                commitment_intent.putExtra("id", ids.get(position));
+                commitment_intent.putExtra("name", names.get(position));
+                commitment_intent.putExtra("description", descriptions.get(position));
                 context.startActivity(commitment_intent);
             }
         });
@@ -74,8 +75,7 @@ public class CommitmentList extends ArrayAdapter<String> {
         deleteButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                TextView id = (TextView) v.findViewById(R.id.id);
-                String idString = id.getText().toString();
+                String idString = ids.get(position);
                 mDatabase.child("projects").child(project).child("commitments").child(idString).removeValue();
             }
         });
