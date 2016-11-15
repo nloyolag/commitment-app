@@ -60,8 +60,6 @@ public class UserHome extends AppCompatActivity {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                 TeamModel team = dataSnapshot.getValue(TeamModel.class);
-                Log.d("ID", "" + team.id);
-                Log.d("NAME", "" + team.name);
                 if (team.users.contains(user.getUid()) && !project_ids.contains(team.id)) {
                     project_ids.add(team.id);
                     project_names.add(team.name);
