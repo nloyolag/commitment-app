@@ -6,6 +6,10 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context="itesm.mx.commitment_app.Commitments">
 
+    <include
+        android:id="@+id/tool_bar"
+        layout="@layout/toolbar"
+        ></include>
 
     <com.roughike.bottombar.BottomBar
         android:id="@+id/bottomBar"

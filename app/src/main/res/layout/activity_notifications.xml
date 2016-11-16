@@ -6,11 +6,17 @@
     android:layout_height="match_parent"
     tools:context="itesm.mx.commitment_app.Notifications">
 
+    <include
+        android:id="@+id/tool_bar"
+        layout="@layout/toolbar"
+        ></include>
+
     <ListView
         android:id="@+id/list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@+id/bottomBar" />
+        android:layout_above="@+id/bottomBar"
+        android:layout_below="@+id/tool_bar"/>
 
 
     <com.roughike.bottombar.BottomBar

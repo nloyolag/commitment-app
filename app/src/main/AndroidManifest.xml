@@ -29,11 +29,6 @@
         <activity android:name=".UserHome" />
         <activity android:name=".NewProject" />
         <activity android:name=".UserSettings" />
-        <activity
-            android:name=".NavigationDrawer"
-            android:label="@string/title_activity_navigation_drawer"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".Toolbar" />
         <activity android:name=".Dashboard" android:theme="@style/noAnimTheme"/>
         <activity android:name=".Surveys" android:theme="@style/noAnimTheme"/>
         <activity android:name=".AnswerSurvey" />
