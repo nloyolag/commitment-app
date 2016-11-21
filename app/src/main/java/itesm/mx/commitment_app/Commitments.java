@@ -71,7 +71,7 @@ public class Commitments extends AppCompatActivity {
                         commitmentsList.add(commitment);
                     }
                 }
-                populateListView();
+//                populateListView();
             }
 
             @Override
@@ -82,7 +82,7 @@ public class Commitments extends AppCompatActivity {
 
         });
 
-        BottomBar bottomBar = (BottomBar) findViewById(R.id.bottomBar);
+        final BottomBar bottomBar = (BottomBar) findViewById(R.id.bottomBar);
         bottomBar.setDefaultTab(R.id.tab_commitments);
         bottomBar.setOnTabSelectListener(new OnTabSelectListener() {
             @Override
@@ -108,7 +108,15 @@ public class Commitments extends AppCompatActivity {
         });
     }
 
+    public void onRestart(){
+        super.onRestart();
+        final BottomBar bottomBar = (BottomBar) findViewById(R.id.bottomBar);
+        bottomBar.setDefaultTab(R.id.tab_commitments);
+    }
 
+
+
+/*
     private void populateListView() {
         for (Commitment commitment : commitmentsList) {
             if (!ids.contains(commitment.id)) {
@@ -122,12 +130,12 @@ public class Commitments extends AppCompatActivity {
             }
         }
         adapter = new CommitmentList(Commitments.this, ids, names, descriptions, project);
-        commitment_list = (ListView)findViewById(R.id.commitment_list);
+        //commitment_list = (ListView)findViewById(R.id.commitment_list);
         commitment_list.setAdapter(adapter);
 
         // Configure the list view
         //ListView listView = (ListView) findViewById(R.id.friends_listview);
         //listView.setAdapter(adapter);
     }
-
+*/
 }

@@ -20,6 +20,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -60,19 +61,32 @@ public class Login extends AppCompatActivity implements LoaderCallbacks<Cursor> 
     private UserLoginTask mAuthTask = null;
 
     // UI references.
-    private AutoCompleteTextView mEmailView;
+    private EditText mEmailView;
     private EditText mPasswordView;
     private View mProgressView;
     private View mLoginFormView;
+
+    private Boolean login_success = false;
+    MyApplication context;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+
+        context = (MyApplication) getApplicationContext();
+
         // Set up the login form.
-        mEmailView = (AutoCompleteTextView) findViewById(R.id.email);
+        mEmailView = (EditText) findViewById(R.id.email);
         populateAutoComplete();
         mAuth = FirebaseAuth.getInstance();
+
+        FirebaseUser user = mAuth.getCurrentUser();
+
+        if (user != null) {
+            Intent intent = new Intent(Login.this, UserHome.class);
+            startActivity(intent);
+        }
 
         mPasswordView = (EditText) findViewById(R.id.password);
         /*mPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
@@ -97,6 +111,16 @@ public class Login extends AppCompatActivity implements LoaderCallbacks<Cursor> 
 
         //mLoginFormView = findViewById(R.id.login_form);
         //mProgressView = findViewById(R.id.login_progress);
+
+        TextView create_account = (TextView) findViewById(R.id.link_signup);
+        create_account.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(Login.this, CreateAccount.class);
+                startActivity(intent);
+            }
+        });
     }
 
     private void populateAutoComplete() {
@@ -165,7 +189,7 @@ public class Login extends AppCompatActivity implements LoaderCallbacks<Cursor> 
         View focusView = null;
 
         // Check for a valid password, if the user entered one.
-        if (!TextUtils.isEmpty(password) && !isPasswordValid(password)) {
+        if (TextUtils.isEmpty(password) && !isPasswordValid(password) && password.isEmpty()) {
             mPasswordView.setError(getString(R.string.error_invalid_password));
             focusView = mPasswordView;
             cancel = true;
@@ -187,9 +211,6 @@ public class Login extends AppCompatActivity implements LoaderCallbacks<Cursor> 
             // form field with an error.
             focusView.requestFocus();
         } else {
-            // Show a progress spinner, and kick off a background task to
-            // perform the user login attempt.
-            showProgress(true);
             mAuthTask = new UserLoginTask(email, password);
             mAuthTask.execute((Void) null);
         }
@@ -267,7 +288,7 @@ public class Login extends AppCompatActivity implements LoaderCallbacks<Cursor> 
             cursor.moveToNext();
         }
 
-        addEmailsToAutoComplete(emails);
+        //addEmailsToAutoComplete(emails);
     }
 
     @Override
@@ -275,6 +296,7 @@ public class Login extends AppCompatActivity implements LoaderCallbacks<Cursor> 
 
     }
 
+    /*
     private void addEmailsToAutoComplete(List<String> emailAddressCollection) {
         //Create adapter to tell the AutoCompleteTextView what to show in its dropdown list.
         ArrayAdapter<String> adapter =
@@ -282,7 +304,7 @@ public class Login extends AppCompatActivity implements LoaderCallbacks<Cursor> 
                         android.R.layout.simple_dropdown_item_1line, emailAddressCollection);
 
         mEmailView.setAdapter(adapter);
-    }
+    }*/
 
 
     private interface ProfileQuery {
@@ -313,18 +335,17 @@ public class Login extends AppCompatActivity implements LoaderCallbacks<Cursor> 
         protected Boolean doInBackground(Void... params) {
 
             mAuth.signInWithEmailAndPassword(mEmail, mPassword)
-                .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                .addOnCompleteListener(Login.this, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
-                            startActivity(new Intent(Login.this, UserHome.class));
-                            finish();
+                            login_success = true;
                         } else {
-                            Toast.makeText(getApplicationContext(), "Sign In Failed",
-                                    Toast.LENGTH_SHORT).show();
+                            login_success = false;
                         }
                     }
                 });
+
 
             return true;
         }
@@ -332,13 +353,12 @@ public class Login extends AppCompatActivity implements LoaderCallbacks<Cursor> 
         @Override
         protected void onPostExecute(final Boolean success) {
             mAuthTask = null;
-            showProgress(false);
 
-            if (success) {
+            if (login_success) {
+                startActivity(new Intent(Login.this, UserHome.class));
                 finish();
             } else {
                 mPasswordView.setError(getString(R.string.error_incorrect_password));
-                mPasswordView.requestFocus();
             }
         }
 
