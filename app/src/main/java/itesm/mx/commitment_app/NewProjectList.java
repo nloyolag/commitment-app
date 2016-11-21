@@ -1,7 +1,6 @@
 package itesm.mx.commitment_app;
 
 import android.app.Activity;
-import android.content.Context;
 import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,8 +8,6 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
-
 import java.util.ArrayList;
 
 /**
@@ -39,16 +36,17 @@ class NewProjectList extends ArrayAdapter<String>{
 
         ImageView deleteButton = (ImageView) rowView.findViewById(R.id.delete_member);
         deleteButton.setImageResource(R.drawable.ic_delete);
-            deleteButton.setTag(position);
-/*
+        deleteButton.setTag(position);
+
         deleteButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(context, "Button clicked", Toast.LENGTH_SHORT);
-
+                int pos = (int) v.getTag();
+                member.remove(pos);
+                notifyDataSetChanged();
             }
         });
-*/
+
 
             return rowView;
     }

@@ -7,6 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.KeyEvent;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.view.View;
@@ -55,6 +56,7 @@ public class NewProject extends AppCompatActivity {
         list = (ListView)findViewById(R.id.new_project_list);
         inviteMember = (TextView) findViewById(R.id.input_member_email);
         user_list = new HashMap<String, User>();
+
 
         inviteMember.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override

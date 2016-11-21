@@ -4,6 +4,10 @@ import android.content.Intent;
 import android.support.annotation.IdRes;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -30,7 +34,6 @@ import java.util.List;
 public class Commitments extends AppCompatActivity {
 
     private ListView commitment_list;
-    private ArrayList<Commitment> commitmentsList;
     private CommitmentList adapter;
     private ArrayList<String> names;
     private ArrayList<String> descriptions;
@@ -48,38 +51,64 @@ public class Commitments extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_commitments);
 
+        Toolbar toolbar = (Toolbar) findViewById(R.id.tool_bar);
+        setSupportActionBar(toolbar);
+
+        commitment_list = (ListView) findViewById(R.id.commitment_list_adapter);
         context = (MyApplication) getApplicationContext();
         mDatabase = FirebaseDatabase.getInstance().getReference();
         project = context.getProject();
-        commitmentsList = new ArrayList<Commitment>();
         names = new ArrayList<String>();
         descriptions = new ArrayList<String>();
         ids = new ArrayList<String>();
 
-        mDatabase.child("projects").child(project).child("commitments").addValueEventListener(new ValueEventListener() {
+        mDatabase.child("projects").child(project).child("commitments").addChildEventListener(new ChildEventListener() {
             @Override
-            public void onDataChange(DataSnapshot snapshot) {
-                HashMap<String, Object> commitments = (HashMap<String, Object>) snapshot.getValue();
-                for (Object commitmentVal : commitments.values()) {
-                    HashMap<String, Object> commitmentMap = (HashMap<String, Object>) commitmentVal;
-                    String id = (String) commitmentMap.remove("id");
-                    String name = (String) commitmentMap.remove("name");
-                    String description = (String) commitmentMap.remove("description");
-                    Commitment commitment = new Commitment(name, description);
-                    commitment.setId(id);
-                    if (!commitmentsList.contains(commitment)) {
-                        commitmentsList.add(commitment);
-                    }
+            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                Commitment commitment = dataSnapshot.getValue(Commitment.class);
+                if (!ids.contains(commitment.id)) {
+                    ids.add(commitment.id);
+                    names.add(commitment.name);
+                    descriptions.add(commitment.description);
                 }
-//                populateListView();
+                adapter = new CommitmentList(Commitments.this, ids, names, descriptions, project);
+                commitment_list.setAdapter(adapter);
+                commitment_list.invalidateViews();
+            }
+
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+                Commitment commitment = dataSnapshot.getValue(Commitment.class);
+                int location = ids.indexOf(commitment.id);
+                names.set(location, commitment.name);
+                descriptions.set(location, commitment.description);
+                adapter = new CommitmentList(Commitments.this, ids, names, descriptions, project);
+                commitment_list.setAdapter(adapter);
+                commitment_list.invalidateViews();
+            }
+
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
+                Commitment commitment = dataSnapshot.getValue(Commitment.class);
+                int location = ids.indexOf(commitment.id);
+                ids.remove(location);
+                names.remove(location);
+                descriptions.remove(location);
+                adapter = new CommitmentList(Commitments.this, ids, names, descriptions, project);
+                commitment_list.setAdapter(adapter);
+                commitment_list.invalidateViews();
+            }
+
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
             }
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
-                Toast.makeText(context, "An error occurred while loading the commitments",
+                Toast.makeText(context, "An error ocurred while loading the commitments",
                         Toast.LENGTH_SHORT).show();
             }
-
         });
 
         final BottomBar bottomBar = (BottomBar) findViewById(R.id.bottomBar);
@@ -92,7 +121,6 @@ public class Commitments extends AppCompatActivity {
                 }
                 if (tabId == R.id.tab_surveys) {
                     startActivity(new Intent(getApplicationContext(), Surveys.class));
-
                 }
                 if (tabId == R.id.tab_commitments) {
                 }
@@ -108,34 +136,28 @@ public class Commitments extends AppCompatActivity {
         });
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.toolbar_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.settings:
+                startActivity(new Intent(getApplicationContext(), UserSettings.class));
+                break;
+            default:
+                super.onOptionsItemSelected(item);
+        }
+        return true;
+    }
+
     public void onRestart(){
         super.onRestart();
         final BottomBar bottomBar = (BottomBar) findViewById(R.id.bottomBar);
         bottomBar.setDefaultTab(R.id.tab_commitments);
     }
-
-
-
-/*
-    private void populateListView() {
-        for (Commitment commitment : commitmentsList) {
-            if (!ids.contains(commitment.id)) {
-                ids.add(commitment.id);
-            }
-            if (!names.contains(commitment.name)) {
-                names.add(commitment.name);
-            }
-            if (!descriptions.contains(commitment.description)) {
-                descriptions.add(commitment.description);
-            }
-        }
-        adapter = new CommitmentList(Commitments.this, ids, names, descriptions, project);
-        //commitment_list = (ListView)findViewById(R.id.commitment_list);
-        commitment_list.setAdapter(adapter);
-
-        // Configure the list view
-        //ListView listView = (ListView) findViewById(R.id.friends_listview);
-        //listView.setAdapter(adapter);
-    }
-*/
 }
