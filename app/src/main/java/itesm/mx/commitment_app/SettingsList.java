@@ -12,14 +12,14 @@ import android.widget.TextView;
  * Created by luis on 18/11/16.
  */
 
-class UserSettingsList extends ArrayAdapter<String> {
+class SettingsList extends ArrayAdapter<String> {
     private final String [] items;
     private final Activity context;
     private final int [] colors;
     private final View.OnClickListener listener;
 
-    UserSettingsList(Activity context, String [] items, int [] colors, View.OnClickListener listener) {
-        super(context, R.layout.user_settings_list_adapter, items);
+    SettingsList(Activity context, String [] items, int [] colors, View.OnClickListener listener) {
+        super(context, R.layout.settings_list_adapter, items);
         this.context = context;
         this.items = items;
         this.colors = colors;
@@ -30,7 +30,7 @@ class UserSettingsList extends ArrayAdapter<String> {
     public View getView(int position, View view, @NonNull ViewGroup parent){
         LayoutInflater inflater = context.getLayoutInflater();
 
-        View rowView= inflater.inflate(R.layout.user_settings_list_adapter, null, true);
+        View rowView= inflater.inflate(R.layout.settings_list_adapter, null, true);
         TextView itemView = (TextView) rowView.findViewById(R.id.settings_text_item);
         itemView.setText(items[position]);
         if (colors[position] != 0)

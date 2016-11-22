@@ -113,7 +113,7 @@ public class Dashboard extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.settings:
-                    startActivity(new Intent(getApplicationContext(), UserSettings.class));
+                    startActivity(new Intent(getApplicationContext(), Settings.class));
                 break;
             default:
                 super.onOptionsItemSelected(item);

@@ -21,7 +21,9 @@
     <ExpandableListView
         android:id="@+id/survey_expandable_list"
         android:layout_width="wrap_content"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:layout_above="@+id/bottomBar"
+        android:layout_below="@+id/tool_bar">
     </ExpandableListView>
 
 </RelativeLayout>

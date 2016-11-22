@@ -31,6 +31,8 @@
         <activity android:name=".UserHome" />
         <activity android:name=".NewProject" />
         <activity android:name=".UserSettings" />
+        <activity android:name=".Settings" />
+
         <activity
             android:name=".Dashboard"
             android:theme="@style/noAnimTheme" />
