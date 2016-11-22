@@ -8,8 +8,8 @@
 
     <include
         android:id="@+id/tool_bar"
-        layout="@layout/toolbar"
-        ></include>
+        layout="@layout/toolbar">
+    </include>
 
     <com.roughike.bottombar.BottomBar
         android:id="@+id/bottomBar"
@@ -18,13 +18,10 @@
         android:layout_alignParentBottom="true"
         app:bb_tabXmlResource="@xml/bottombar_tabs" />
 
-    <TextView
-        android:text="Surveys"
+    <ExpandableListView
+        android:id="@+id/survey_expandable_list"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/textView5"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="125dp" />
+        android:layout_height="match_parent">
+    </ExpandableListView>
 
 </RelativeLayout>
