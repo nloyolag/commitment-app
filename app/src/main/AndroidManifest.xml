@@ -32,7 +32,6 @@
         <activity android:name=".Dashboard" android:theme="@style/noAnimTheme"/>
         <activity android:name=".Surveys" android:theme="@style/noAnimTheme"/>
         <activity android:name=".AnswerSurvey" />
-        <activity android:name=".Requests" />
         <activity android:name=".Commitments" android:theme="@style/noAnimTheme"/>
         <activity android:name=".EditCommitment" />
         <activity android:name=".Team" android:theme="@style/noAnimTheme"/>

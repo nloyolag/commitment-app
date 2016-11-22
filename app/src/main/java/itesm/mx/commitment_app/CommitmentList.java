@@ -2,15 +2,11 @@ package itesm.mx.commitment_app;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.media.Image;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.google.firebase.database.DatabaseReference;
@@ -52,7 +48,7 @@ public class CommitmentList extends ArrayAdapter<String> {
         idView.setVisibility(View.GONE);
         idView.setText(ids.get(position));
 
-        TextView nameView = (TextView) rowView.findViewById(R.id.name);
+        TextView nameView = (TextView) rowView.findViewById(R.id.edit_name);
         nameView.setText(names.get(position));
 
         TextView descriptionView = (TextView) rowView.findViewById(R.id.description);
