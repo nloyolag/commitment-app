@@ -55,7 +55,7 @@ public class EditCommitment extends AppCompatActivity {
         submit_button = (Button) findViewById(R.id.submit_button);
 
         intent = getIntent();
-        if (intent != null) {
+        if (intent != null && intent.hasExtra("id")) {
             id = intent.getStringExtra("id");
             name = intent.getStringExtra("name");
             description = intent.getStringExtra("description");
