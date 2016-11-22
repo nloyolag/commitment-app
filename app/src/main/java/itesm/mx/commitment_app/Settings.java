@@ -5,6 +5,7 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -25,10 +26,13 @@ public class Settings extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
 
-        View.OnClickListener listener = new View.OnClickListener() {
+        SettingsList adapter = new SettingsList(Settings.this, items, colors);
+        listView = (ListView) findViewById(R.id.list_settings);
+        listView.setAdapter(adapter);
+
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onClick(View v) {
-                int position = (int) v.getTag();
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 switch (position) {
                     case 0:
                         startActivity(new Intent(Settings.this, UserHome.class));
@@ -39,16 +43,14 @@ public class Settings extends AppCompatActivity {
                     case 2:
                         startActivity(new Intent(Settings.this, UserSettings.class));
                         break;
-                    case 3: /*logout*/
+                    case 3:
                         FirebaseAuth.getInstance().signOut();
+                        startActivity(new Intent(Settings.this, Login.class));
                         break;
                 }
-
             }
-        };
+        });
 
-        SettingsList adapter = new SettingsList(Settings.this, items, colors, listener);
-        listView = (ListView) findViewById(R.id.list_settings);
-        listView.setAdapter(adapter);
     }
+
 }

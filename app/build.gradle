@@ -3,7 +3,7 @@ apply plugin: 'com.android.application'
 android {
     compileSdkVersion 24
     //VERSION FOR NOE buildToolsVersion '24.0.1'
-    buildToolsVersion '25.0.0'
+    buildToolsVersion '24.0.1'
 
     defaultConfig {
         applicationId "itesm.mx.commitment_app"

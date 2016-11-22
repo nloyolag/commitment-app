@@ -46,7 +46,8 @@
         <activity android:name=".EditCommitment" />
         <activity
             android:name=".Team"
-            android:theme="@style/noAnimTheme" />
+            android:theme="@style/noAnimTheme"
+            android:windowSoftInputMode="adjustPan"/>
         <activity android:name=".ProjectSettings" />
         <activity
             android:name=".Notifications"

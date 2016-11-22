@@ -16,14 +16,12 @@ class SettingsList extends ArrayAdapter<String> {
     private final String [] items;
     private final Activity context;
     private final int [] colors;
-    private final View.OnClickListener listener;
 
-    SettingsList(Activity context, String [] items, int [] colors, View.OnClickListener listener) {
+    SettingsList(Activity context, String [] items, int [] colors) {
         super(context, R.layout.settings_list_adapter, items);
         this.context = context;
         this.items = items;
         this.colors = colors;
-        this.listener = listener;
     }
 
     @NonNull
@@ -36,7 +34,6 @@ class SettingsList extends ArrayAdapter<String> {
         if (colors[position] != 0)
             itemView.setTextColor(colors[position]);
         itemView.setTag(position);
-        itemView.setOnClickListener(listener);
 
 
         return rowView;

@@ -11,6 +11,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ListView;
 import android.widget.Toast;
 
 import com.firebase.client.Firebase;
@@ -31,10 +32,9 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class Team extends AppCompatActivity {
-/*
     String new_user;
     String project;
-    TeamList team_list;
+    ListView team_list;
 
     private ArrayList<String> names;
     private ArrayList<String> ids;
@@ -53,13 +53,16 @@ public class Team extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.tool_bar);
         setSupportActionBar(toolbar);
 
-        new_user_field = findViewById(R.id.new_user);
-        submit_new_user_button = findViewById(R.id.submit_new_user_button);
+        team_list = (ListView) findViewById(R.id.team_list);
+        new_user_field = (EditText) findViewById(R.id.new_user);
+        submit_new_user_button = (Button) findViewById(R.id.submit_new_user_button);
         names = new ArrayList<String>();
         ids = new ArrayList<String>();
         context = (MyApplication) getApplicationContext();
         project = context.getProject();
         mDatabase = FirebaseDatabase.getInstance().getReference();
+
+
 
         mDatabase.child("projects").child(project).addValueEventListener(new ValueEventListener() {
             @Override
@@ -71,7 +74,7 @@ public class Team extends AppCompatActivity {
                     String name = mDatabase.child("users").child(id).child("name").getKey();
                     names.add(name);
                 }
-                adapter = new TeamList(Team.this, ids, names, project);
+                TeamList adapter = new TeamList(Team.this, ids, names, project);
                 team_list.setAdapter(adapter);
                 team_list.invalidateViews();
             }
@@ -194,5 +197,5 @@ public class Team extends AppCompatActivity {
         Matcher matcher = pattern.matcher(email);
         return matcher.matches();
     }
-    */
+
 }
