@@ -31,15 +31,19 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class Team extends AppCompatActivity {
+/*
+    String new_user;
+    String project;
+    TeamList team_list;
 
-//    String new_user;
-//    String project;
-//
-//    EditText new_user_field;
-//    Button submit_new_user_button;
-//
-//    MyApplication context;
-//    private DatabaseReference mDatabase;
+    private ArrayList<String> names;
+    private ArrayList<String> ids;
+
+    EditText new_user_field;
+    Button submit_new_user_button;
+
+    MyApplication context;
+    private DatabaseReference mDatabase;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,69 +53,90 @@ public class Team extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.tool_bar);
         setSupportActionBar(toolbar);
 
-//        new_user_field = findViewById(R.id.new_user);
-//        submit_new_user_button = findViewById(R.id.submit_new_user_button);
-//        context = (MyApplication) getApplicationContext();
-//        project = context.getProject();
-//        mDatabase = FirebaseDatabase.getInstance().getReference();
-//
-//        submit_new_user_button.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                new_user = new_user_field.getText().toString();
-//
-//                Boolean no_errors = true;
-//
-//                if (!isValidEmail(new_user)) {
-//                    new_user_field.setError("Invalid Email");
-//                    no_errors = false;
-//                }
-//
-//                if (no_errors) {
-//
-//                    mDatabase.child("projects").child(project).addListenerForSingleValueEvent(new ValueEventListener() {
-//                        @Override
-//                        public void onDataChange(DataSnapshot dataSnapshot) {
-//                            TeamModel team = dataSnapshot.getValue(TeamModel.class);
-//                            final ArrayList<String> users = team.users;
-//                            mDatabase.child("users").addListenerForSingleValueEvent(new ValueEventListener() {
-//                                @Override
-//                                public void onDataChange(DataSnapshot dataSnapshot) {
-//                                    Map<String, User> users_query = (HashMap<String, User>) dataSnapshot.getValue();
-//                                    String uid = "";
-//                                    for (User user: users_query.values()) {
-//                                        if (user.email.equals(new_user)) {
-//                                            uid = user.id;
-//                                            break;
-//                                        }
-//                                    }
-//                                    if (uid.equals("")) {
-//                                        Toast.makeText(context, "This email does not have an account",
-//                                                Toast.LENGTH_SHORT).show();
-//                                    } else {
-//                                        users.add(uid);
-//                                        mDatabase.child("projects").child(project).child("users").setValue(users);
-//                                        Toast.makeText(context, "User added to project!",
-//                                                Toast.LENGTH_SHORT).show();
-//                                        finish();
-//                                    }
-//                                }
-//
-//                                @Override
-//                                public void onCancelled(DatabaseError databaseError) {
-//
-//                                }
-//                            });
-//                        }
-//
-//                        @Override
-//                        public void onCancelled(DatabaseError databaseError) {
-//
-//                        }
-//                    });
-//                }
-//            }
-//        });
+        new_user_field = findViewById(R.id.new_user);
+        submit_new_user_button = findViewById(R.id.submit_new_user_button);
+        names = new ArrayList<String>();
+        ids = new ArrayList<String>();
+        context = (MyApplication) getApplicationContext();
+        project = context.getProject();
+        mDatabase = FirebaseDatabase.getInstance().getReference();
+
+        mDatabase.child("projects").child(project).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                TeamModel team = dataSnapshot.getValue(TeamModel.class);
+                ids = (ArrayList<String>) team.users;
+                names = new ArrayList<String>();
+                for (String id : ids) {
+                    String name = mDatabase.child("users").child(id).child("name").getKey();
+                    names.add(name);
+                }
+                adapter = new TeamList(Team.this, ids, names, project);
+                team_list.setAdapter(adapter);
+                team_list.invalidateViews();
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                Toast.makeText(context, "An error ocurred while loading the team members",
+                        Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        submit_new_user_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                new_user = new_user_field.getText().toString();
+
+                Boolean no_errors = true;
+
+                if (!isValidEmail(new_user)) {
+                    new_user_field.setError("Invalid Email");
+                    no_errors = false;
+                }
+
+                if (no_errors) {
+                    mDatabase.child("users").addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) {
+                            Map<String, User> users_query = (HashMap<String, User>) dataSnapshot.getValue();
+                            String uid = "";
+                            String name = "";
+                            Boolean exists = false;
+                            for (User user: users_query.values()) {
+                                if (user.email.equals(new_user)) {
+                                    uid = user.id;
+                                    name = user.name;
+                                    if (ids.contains(uid)) {
+                                        exists = true;
+                                    }
+                                    break;
+                                }
+                            }
+                            if (uid.equals("")) {
+                                Toast.makeText(context, "This email does not have an account",
+                                        Toast.LENGTH_SHORT).show();
+                            } else {
+                                if (!exists) {
+                                    ids.add(uid);
+                                    names.add(name);
+                                }
+                                mDatabase.child("projects").child(project).child("users").setValue(ids);
+                                Toast.makeText(context, "User added to project!",
+                                        Toast.LENGTH_SHORT).show();
+                                finish();
+                            }
+                        }
+
+                        @Override
+                        public void onCancelled(DatabaseError databaseError) {
+                            Toast.makeText(context, "An error ocurred while loading the team members",
+                                    Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                }
+            }
+        });
 
         final BottomBar bottomBar = (BottomBar) findViewById(R.id.bottomBar);
         bottomBar.setDefaultTab(R.id.tab_team);
@@ -161,12 +186,13 @@ public class Team extends AppCompatActivity {
         bottomBar.setDefaultTab(R.id.tab_team);
     }
 
-//    private boolean isValidEmail(String email) {
-//        String EMAIL_PATTERN = "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@"
-//                + "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
-//
-//        Pattern pattern = Pattern.compile(EMAIL_PATTERN);
-//        Matcher matcher = pattern.matcher(email);
-//        return matcher.matches();
-//    }
+    private boolean isValidEmail(String email) {
+        String EMAIL_PATTERN = "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@"
+                + "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
+
+        Pattern pattern = Pattern.compile(EMAIL_PATTERN);
+        Matcher matcher = pattern.matcher(email);
+        return matcher.matches();
+    }
+    */
 }
