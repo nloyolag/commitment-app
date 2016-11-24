@@ -9,23 +9,6 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="itesm.mx.commitment_app.EditCommitment">
 
-    <android.support.design.widget.TextInputLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:layout_marginBottom="8dp"></android.support.design.widget.TextInputLayout>
-
-    <android.support.design.widget.TextInputLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:layout_marginBottom="8dp"></android.support.design.widget.TextInputLayout>
-
-    <android.support.design.widget.TextInputLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:layout_marginBottom="8dp"></android.support.design.widget.TextInputLayout>
 
     <android.support.v7.widget.AppCompatButton
         android:id="@+id/submit_button"
@@ -38,16 +21,6 @@
         android:layout_alignParentStart="true"
         android:layout_marginBottom="25dp" />
 
-    <Spinner
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/team_project"
-        android:dropDownWidth="match_parent"
-        android:minWidth="@dimen/activity_horizontal_margin"
-        android:layout_above="@+id/submit_button"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginBottom="60dp" />
 
     <ImageView
         android:src="@drawable/logo2"
@@ -68,21 +41,17 @@
         android:layout_marginTop="31dp" />
 
     <EditText android:id="@+id/id"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:inputType="text"
-        android:hint="ID(Placeholder)"
-        android:layout_height="wrap_content"
-        android:layout_alignTop="@+id/name_field"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginTop="43dp" />
+        android:layout_height="0dp"
+        android:layout_alignTop="@+id/name_field" />
 
     <EditText android:id="@+id/description"
         android:layout_width="match_parent"
         android:inputType="text"
         android:hint="Description"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/id"
+        android:layout_below="@+id/name_field"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" />
 
