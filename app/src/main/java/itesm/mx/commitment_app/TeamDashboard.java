@@ -15,6 +15,11 @@ import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.PieEntry;
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,10 +28,19 @@ import java.util.List;
 /**
  * A simple {@link Fragment} subclass.
  */
+
 public class TeamDashboard extends Fragment {
-    ListView listView;
     String [] members = {"Member 2", "Member 3", "Member 4"};
     int [] memberProgress = {90, 80, 95};
+
+    private ArrayList<String> names;
+    private ArrayList<Integer> scores;
+    private ArrayList<String> ids;
+
+    ListView listView;
+    private DatabaseReference mDatabase;
+    private MyApplication context;
+    private String project;
 
     public TeamDashboard() {
         // Required empty public constructor
@@ -36,9 +50,40 @@ public class TeamDashboard extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
+        context = (MyApplication) getActivity().getApplicationContext();
+        mDatabase = FirebaseDatabase.getInstance().getReference();
+        project = context.getProject();
+
+        mDatabase.child("projects").child(project).child("evaluations").addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                
+            }
+
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        })
+
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_team_dashboard, container, false);
-
 
         //change with actual progress
         int teamProgress = 90;
