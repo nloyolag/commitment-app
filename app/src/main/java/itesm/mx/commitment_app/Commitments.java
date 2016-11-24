@@ -2,6 +2,7 @@ package itesm.mx.commitment_app;
 
 import android.content.Intent;
 import android.support.annotation.IdRes;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -61,6 +62,14 @@ public class Commitments extends AppCompatActivity {
         names = new ArrayList<String>();
         descriptions = new ArrayList<String>();
         ids = new ArrayList<String>();
+
+        FloatingActionButton buttonFab = (FloatingActionButton) findViewById(R.id.add_commitment_fab);
+        buttonFab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(Commitments.this, EditCommitment.class));
+            }
+        });
 
         mDatabase.child("projects").child(project).child("commitments").addChildEventListener(new ChildEventListener() {
             @Override

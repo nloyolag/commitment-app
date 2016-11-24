@@ -21,7 +21,7 @@
     </com.roughike.bottombar.BottomBar>
 
     <android.support.design.widget.FloatingActionButton
-        android:id="@+id/add_commitment"
+        android:id="@+id/add_commitment_fab"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_above="@+id/bottomBar"
@@ -31,6 +31,6 @@
         android:clickable="true"
         app:backgroundTint="@color/colorPrimary"
         app:fabSize="normal"
-        app:srcCompat="@drawable/ic_add" />
+        app:srcCompat="@drawable/ic_add_fab" />
 
 </RelativeLayout>
