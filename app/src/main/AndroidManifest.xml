@@ -25,33 +25,43 @@
         </activity>
         <activity
             android:name=".Login"
-            android:label="@string/title_activity_login" />
+            android:label="Login" />
         <activity android:name=".MainActivity"/>
-        <activity android:name=".CreateAccount" />
-        <activity android:name=".UserHome" />
-        <activity android:name=".NewProject" />
-        <activity android:name=".UserSettings" />
-        <activity android:name=".Settings" />
-
+        <activity android:name=".CreateAccount"
+            android:label="Create Account"/>
+        <activity android:name=".UserHome"
+            android:label="User Home"/>
+        <activity android:name=".NewProject"
+            android:label="New Project"/>
+        <activity android:name=".UserSettings"
+            android:label="User Settings"/>
+        <activity android:name=".Settings"
+            android:label="Settings"/>
         <activity
             android:name=".Dashboard"
-            android:theme="@style/noAnimTheme" />
+            android:theme="@style/noAnimTheme"
+            android:label="Dashboard"/>
         <activity
             android:name=".Surveys"
-            android:theme="@style/noAnimTheme" />
-        <activity android:name=".AnswerSurvey" />
+            android:theme="@style/noAnimTheme"
+            android:label="Surveys"/>
         <activity
             android:name=".Commitments"
-            android:theme="@style/noAnimTheme" />
-        <activity android:name=".EditCommitment" />
+            android:theme="@style/noAnimTheme"
+            android:label="Commitments"/>
+        <activity android:name=".EditCommitment"
+            android:label="Commitment"/>
         <activity
             android:name=".Team"
             android:theme="@style/noAnimTheme"
-            android:windowSoftInputMode="adjustPan"/>
-        <activity android:name=".ProjectSettings" />
+            android:windowSoftInputMode="adjustPan"
+            android:label="Team"/>
+        <activity android:name=".ProjectSettings"
+            android:label="Project Settings"/>
         <activity
             android:name=".Notifications"
-            android:theme="@style/noAnimTheme" />
+            android:theme="@style/noAnimTheme"
+            android:label="Notifications"/>
     </application>
 
 </manifest>

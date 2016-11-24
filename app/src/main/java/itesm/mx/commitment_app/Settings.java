@@ -45,7 +45,8 @@ public class Settings extends AppCompatActivity {
                         break;
                     case 3:
                         FirebaseAuth.getInstance().signOut();
-                        startActivity(new Intent(Settings.this, Login.class));
+                        if (FirebaseAuth.getInstance().getCurrentUser()==null)
+                            startActivity(new Intent(Settings.this, Login.class));
                         break;
                 }
             }

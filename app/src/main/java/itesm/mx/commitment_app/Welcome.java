@@ -35,12 +35,10 @@ public class Welcome extends Activity{
                 // This method will be executed once the timer is over
                 // Start your app main activity
                 Intent i;
-                i = new Intent(Welcome.this, MainActivity.class);
-                //for later:
-                /*if (FirebaseAuth.getInstance().getCurrentUser()!=null)
-                    i = new Intent(Welcome.this, Dashboard.class);
+                if (FirebaseAuth.getInstance().getCurrentUser()!=null)
+                    i = new Intent(Welcome.this, UserHome.class);
                 else
-                    i = new Intent(Welcome.this, Login.class);*/
+                    i = new Intent(Welcome.this, Login.class);
                 startActivity(i);
 
                 // close this activity

@@ -6,11 +6,12 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context="itesm.mx.commitment_app.Commitments">
 
-    <ListView
-        android:id="@+id/commitment_list_adapter"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_alignParentTop="true" />
+
+    <include
+        android:id="@+id/tool_bar"
+        layout="@layout/toolbar"
+        >
+    </include>
 
     <com.roughike.bottombar.BottomBar
         android:id="@+id/bottomBar"
@@ -19,6 +20,13 @@
         android:layout_alignParentBottom="true"
         app:bb_tabXmlResource="@xml/bottombar_tabs" >
     </com.roughike.bottombar.BottomBar>
+
+    <ListView
+        android:id="@+id/commitment_list_adapter"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/tool_bar"
+        android:layout_above="@id/bottomBar"/>
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/add_commitment_fab"

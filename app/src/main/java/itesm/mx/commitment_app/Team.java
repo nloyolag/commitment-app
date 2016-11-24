@@ -14,9 +14,8 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import com.firebase.client.Firebase;
-import com.firebase.client.FirebaseError;
-import com.firebase.client.Query;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -71,8 +70,16 @@ public class Team extends AppCompatActivity {
                 ids = (ArrayList<String>) team.users;
                 names = new ArrayList<String>();
                 for (String id : ids) {
-                    String name = mDatabase.child("users").child(id).child("name").getKey();
-                    names.add(name);
+                    mDatabase.child("users").child(id).child("name").addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) {
+                            String name = (String) dataSnapshot.getValue();
+                            names.add(name);
+                        }
+                        @Override
+                        public void onCancelled(DatabaseError databaseError) {
+                        }
+                    });
                 }
                 TeamList adapter = new TeamList(Team.this, ids, names, project);
                 team_list.setAdapter(adapter);
@@ -102,7 +109,7 @@ public class Team extends AppCompatActivity {
                     mDatabase.child("users").addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
                         public void onDataChange(DataSnapshot dataSnapshot) {
-                            Map<String, User> users_query = (HashMap<String, User>) dataSnapshot.getValue();
+                            HashMap<String, User> users_query = (HashMap<String, User>) dataSnapshot.getValue();
                             String uid = "";
                             String name = "";
                             Boolean exists = false;
@@ -124,11 +131,11 @@ public class Team extends AppCompatActivity {
                                     ids.add(uid);
                                     names.add(name);
                                 }
-                                mDatabase.child("projects").child(project).child("users").setValue(ids);
-                                Toast.makeText(context, "User added to project!",
-                                        Toast.LENGTH_SHORT).show();
-                                finish();
                             }
+                            mDatabase.child("projects").child(project).child("users").setValue(ids);
+                            Toast.makeText(context, "User added to project!",
+                                    Toast.LENGTH_SHORT).show();
+                            finish();
                         }
 
                         @Override
