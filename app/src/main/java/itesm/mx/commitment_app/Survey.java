@@ -7,7 +7,6 @@ public class Survey {
 
     public String from;
     public String to;
-    public String commitment;
     public int rating;
     public String id;
 
@@ -15,17 +14,15 @@ public class Survey {
 
     }
 
-    public Survey(String from, String to, String commitment, int rating) {
+    public Survey(String from, String to, int rating) {
         this.from = from;
         this.to = to;
-        this.commitment = commitment;
         this.rating = rating;
     }
 
-    public Survey(String from, String to, String commitment, int rating, String id) {
+    public Survey(String from, String to, int rating, String id) {
         this.from = from;
         this.to = to;
-        this.commitment = commitment;
         this.rating = rating;
         this.id = id;
     }

@@ -9,10 +9,14 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
  * Created by nloyola on 6/11/16.
@@ -60,11 +64,21 @@ public class CommitmentList extends ArrayAdapter<String> {
         editButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent commitment_intent = new Intent(context, EditCommitment.class);
-                commitment_intent.putExtra("id", ids.get(position));
-                commitment_intent.putExtra("name", names.get(position));
-                commitment_intent.putExtra("description", descriptions.get(position));
-                context.startActivity(commitment_intent);
+                mDatabase.child("projects").child(project).child("commitments").child(ids.get(position)).child("surveys").addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) {
+                            HashMap<String, Survey> surveys = (HashMap<String, Survey>) dataSnapshot.getValue();
+                            Intent commitment_intent = new Intent(context, EditCommitment.class);
+                            commitment_intent.putExtra("id", ids.get(position));
+                            commitment_intent.putExtra("name", names.get(position));
+                            commitment_intent.putExtra("description", descriptions.get(position));
+                            commitment_intent.putExtra("surveys", surveys);
+                            context.startActivity(commitment_intent);
+                        }
+                        @Override
+                        public void onCancelled(DatabaseError databaseError) {
+                        }
+                });
             }
         });
 

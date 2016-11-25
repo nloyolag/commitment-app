@@ -39,6 +39,7 @@ public class Commitments extends AppCompatActivity {
     private ArrayList<String> names;
     private ArrayList<String> descriptions;
     private ArrayList<String> ids;
+    private ArrayList<HashMap<String, Survey>> surveys;
 
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthListener;
@@ -62,6 +63,7 @@ public class Commitments extends AppCompatActivity {
         names = new ArrayList<String>();
         descriptions = new ArrayList<String>();
         ids = new ArrayList<String>();
+        surveys = new ArrayList<HashMap<String, Survey>>();
 
         FloatingActionButton buttonFab = (FloatingActionButton) findViewById(R.id.add_commitment_fab);
         buttonFab.setOnClickListener(new View.OnClickListener() {
@@ -79,6 +81,7 @@ public class Commitments extends AppCompatActivity {
                     ids.add(commitment.id);
                     names.add(commitment.name);
                     descriptions.add(commitment.description);
+                    surveys.add(commitment.surveys);
                 }
                 adapter = new CommitmentList(Commitments.this, ids, names, descriptions, project);
                 commitment_list.setAdapter(adapter);
@@ -91,6 +94,7 @@ public class Commitments extends AppCompatActivity {
                 int location = ids.indexOf(commitment.id);
                 names.set(location, commitment.name);
                 descriptions.set(location, commitment.description);
+                surveys.set(location, commitment.surveys);
                 adapter = new CommitmentList(Commitments.this, ids, names, descriptions, project);
                 commitment_list.setAdapter(adapter);
                 commitment_list.invalidateViews();
@@ -103,6 +107,7 @@ public class Commitments extends AppCompatActivity {
                 ids.remove(location);
                 names.remove(location);
                 descriptions.remove(location);
+                surveys.remove(location);
                 adapter = new CommitmentList(Commitments.this, ids, names, descriptions, project);
                 commitment_list.setAdapter(adapter);
                 commitment_list.invalidateViews();

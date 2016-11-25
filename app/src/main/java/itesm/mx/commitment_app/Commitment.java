@@ -26,4 +26,8 @@ public class Commitment {
         this.id = id;
     }
 
+    public void setSurveys(HashMap<String, Survey> surveys) {
+        this.surveys = surveys;
+    }
+
 }
