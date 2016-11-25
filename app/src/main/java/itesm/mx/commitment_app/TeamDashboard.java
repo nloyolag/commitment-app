@@ -207,8 +207,5 @@ public class TeamDashboard extends Fragment {
             scores.set(location, (int) (20 * aggregate.get(survey.to) / eval_no.get(survey.to)));
             it.remove();
         }
-        Log.d("PAJAAAAAAAAA", String.valueOf(ids.size()));
-        Log.d("PAJAAAAAAAAA", String.valueOf(scores.size()));
-        Log.d("PAJITAIIIIII", String.valueOf(surveys.size()));
     }
 }

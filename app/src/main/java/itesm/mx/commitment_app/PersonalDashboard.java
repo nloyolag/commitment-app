@@ -3,6 +3,7 @@ package itesm.mx.commitment_app;
 
 import android.graphics.Color;
 import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,9 +23,17 @@ import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.PieEntry;
 import com.github.mikephil.charting.interfaces.datasets.IPieDataSet;
 import com.github.mikephil.charting.utils.ColorTemplate;
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 
 /**
@@ -32,8 +41,12 @@ import java.util.List;
  */
 public class PersonalDashboard extends Fragment {
     ListView listView;
+    ArrayList<Commitment> commitments;
     ArrayList<String> surveys;
     ArrayList<Integer> surveyProgress;
+    MyApplication context;
+    String project;
+    DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
 
     public PersonalDashboard() {
         // Required empty public constructor
@@ -44,29 +57,69 @@ public class PersonalDashboard extends Fragment {
                              Bundle savedInstanceState) {
 
         surveys = new ArrayList<String>();
-        surveys.add("survey1");
-        surveys.add("survey2");
-        surveys.add("survey3");
-
         surveyProgress = new ArrayList<Integer>();
-        surveyProgress.add(100);
-        surveyProgress.add(78);
-        surveyProgress.add(55);
+
+        context = (MyApplication) getActivity().getApplicationContext();
+        project = context.getProject();
+        commitments = new ArrayList<Commitment>();
 
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_personal_dashboard, container, false);
+        listView = (ListView)view.findViewById(R.id.dashboard_list);
+        final PieChart pieChart = (PieChart) view.findViewById(R.id.pie_chart);
 
+        mDatabase.child("projects").child(project).child("commitments").addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                Commitment commitment = dataSnapshot.getValue(Commitment.class);
+                commitments.add(commitment);
+                populateLists();
+                drawPieChart(pieChart, getOverallScore());
+                DashboardList adapter = new DashboardList(getActivity(), surveys, surveyProgress);
+                listView.setAdapter(adapter);
+                listView.invalidateViews();
+            }
 
-        //change with actual progress
-        int myProgress = 90;
-        PieChart pieChart = (PieChart) view.findViewById(R.id.pie_chart);
-        drawPieChart(pieChart, myProgress);
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+                Commitment commitment = dataSnapshot.getValue(Commitment.class);
+                for (Commitment com : commitments) {
+                    if (com.id.equals(commitment.id)) {
+                        commitments.remove(com);
+                        commitments.add(commitment);
+                        break;
+                    }
+                }
+                populateLists();
+                drawPieChart(pieChart, getOverallScore());
+                DashboardList adapter = new DashboardList(getActivity(), surveys, surveyProgress);
+                listView.setAdapter(adapter);
+                listView.invalidateViews();
+            }
 
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
+                Commitment commitment = dataSnapshot.getValue(Commitment.class);
+                commitments.remove(commitment);
+                populateLists();
+                drawPieChart(pieChart, getOverallScore());
+                DashboardList adapter = new DashboardList(getActivity(), surveys, surveyProgress);
+                listView.setAdapter(adapter);
+                listView.invalidateViews();
+            }
 
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
 
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
 
         DashboardList adapter = new DashboardList(getActivity(), surveys, surveyProgress);
-        listView = (ListView)view.findViewById(R.id.dashboard_list);
         listView.setAdapter(adapter);
         //Must be at the end!
         return view;
@@ -89,5 +142,30 @@ public class PersonalDashboard extends Fragment {
         legend.setEnabled(false);
         Description description = pieChart.getDescription();
         description.setEnabled(false);
+    }
+
+    public void populateLists() {
+        surveys = new ArrayList<String>();
+        surveyProgress = new ArrayList<Integer>();
+        for (Commitment commitment : commitments) {
+            int count = 0;
+            int aggregate = 0;
+            for (Survey survey : commitment.surveys.values()) {
+                count++;
+                aggregate += survey.rating;
+            }
+            int score = (int) (aggregate / count * 20);
+            surveyProgress.add(score);
+            surveys.add(commitment.name);
+        }
+    }
+
+    public int getOverallScore() {
+        int sum = 0;
+        for (int i = 0; i < surveyProgress.size(); i++) {
+            sum += surveyProgress.get(i);
+        }
+        sum = (int) sum / surveyProgress.size();
+        return sum;
     }
 }
