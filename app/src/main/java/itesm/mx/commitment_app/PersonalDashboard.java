@@ -32,8 +32,8 @@ import java.util.List;
  */
 public class PersonalDashboard extends Fragment {
     ListView listView;
-    String [] surveys = {"Survey 1", "Survey 2", "Survey 3"};
-    int [] surveyProgress = {85, 90, 95};
+    ArrayList<String> surveys;
+    ArrayList<Integer> surveyProgress;
 
     public PersonalDashboard() {
         // Required empty public constructor
@@ -42,6 +42,17 @@ public class PersonalDashboard extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
+        surveys = new ArrayList<String>();
+        surveys.add("survey1");
+        surveys.add("survey2");
+        surveys.add("survey3");
+
+        surveyProgress = new ArrayList<Integer>();
+        surveyProgress.add(100);
+        surveyProgress.add(78);
+        surveyProgress.add(55);
+
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_personal_dashboard, container, false);
 
@@ -54,7 +65,7 @@ public class PersonalDashboard extends Fragment {
 
 
 
-        DashboardList adapter = new DashboardList(getActivity(), surveys, surveyProgress );
+        DashboardList adapter = new DashboardList(getActivity(), surveys, surveyProgress);
         listView = (ListView)view.findViewById(R.id.dashboard_list);
         listView.setAdapter(adapter);
         //Must be at the end!

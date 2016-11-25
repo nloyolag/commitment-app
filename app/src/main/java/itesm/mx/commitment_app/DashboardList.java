@@ -9,6 +9,8 @@ import android.widget.ArrayAdapter;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import java.util.ArrayList;
+
 
 /**
  * Created by luis on 8/11/16.
@@ -17,10 +19,10 @@ import android.widget.TextView;
 class DashboardList extends ArrayAdapter<String> {
 
     private final Activity context;
-    private final String[] title;
-    private final int[] progress;
+    private final ArrayList<String> title;
+    private final ArrayList<Integer> progress;
 
-    DashboardList (Activity context, String[] title, int[] progress) {
+    DashboardList (Activity context, ArrayList<String> title, ArrayList<Integer> progress) {
         super(context, R.layout.list_adapter, title);
         this.context = context;
         this.title = title;
@@ -33,13 +35,13 @@ class DashboardList extends ArrayAdapter<String> {
 
         View rowView= inflater.inflate(R.layout.dashboard_list_adapter, null, true);
         TextView titleView = (TextView) rowView.findViewById(R.id.progress_title);
-        titleView.setText(title[position]);
+        titleView.setText(title.get(position));
 
         ProgressBar bar = (ProgressBar) rowView.findViewById(R.id.progressBar);
-        bar.setProgress(progress[position]);
+        bar.setProgress(progress.get(position));
 
         TextView progressValue = (TextView) rowView.findViewById(R.id.progress_value);
-        progressValue.setText(String.valueOf(progress[position]));
+        progressValue.setText(String.valueOf(progress.get(position)));
 
 
         return rowView;
