@@ -145,6 +145,7 @@ public class CreateAccount extends AppCompatActivity {
 
     private void writeNewUser(String userId, String name, String username, String email) {
         User user = new User(name, username, email);
+        user.setId(userId);
         mDatabase.child("users").child(userId).setValue(user);
     }
 

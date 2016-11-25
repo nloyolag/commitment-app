@@ -1,6 +1,7 @@
 package itesm.mx.commitment_app;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -8,6 +9,7 @@ import java.util.List;
  */
 public class TeamModel {
 
+    public HashMap<String, Commitment> commitments;
     public String name;
     public String id;
     public List<String> users;
@@ -24,6 +26,10 @@ public class TeamModel {
 
     public void setId(String id) {
         this.id = id;
+    }
+
+    public void setCommitments(HashMap<String, Commitment> commitments) {
+        this.commitments = commitments;
     }
 
 }

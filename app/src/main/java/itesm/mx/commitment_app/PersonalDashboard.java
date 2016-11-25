@@ -151,8 +151,13 @@ public class PersonalDashboard extends Fragment {
             int count = 0;
             int aggregate = 0;
             for (Survey survey : commitment.surveys.values()) {
-                count++;
-                aggregate += survey.rating;
+                if (survey.rating >= 0) {
+                    count++;
+                    aggregate += survey.rating;
+                }
+            }
+            if (count == 0) {
+                continue;
             }
             int score = (int) (aggregate / count * 20);
             surveyProgress.add(score);

@@ -5,6 +5,7 @@ import android.support.annotation.IdRes;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -42,7 +43,7 @@ public class Team extends AppCompatActivity {
     Button submit_new_user_button;
 
     MyApplication context;
-    private DatabaseReference mDatabase;
+    DatabaseReference mDatabase;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,8 +61,6 @@ public class Team extends AppCompatActivity {
         context = (MyApplication) getApplicationContext();
         project = context.getProject();
         mDatabase = FirebaseDatabase.getInstance().getReference();
-
-
 
         mDatabase.child("projects").child(project).addValueEventListener(new ValueEventListener() {
             @Override
@@ -109,19 +108,21 @@ public class Team extends AppCompatActivity {
                     mDatabase.child("users").addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
                         public void onDataChange(DataSnapshot dataSnapshot) {
-                            HashMap<String, User> users_query = (HashMap<String, User>) dataSnapshot.getValue();
+                            HashMap<String, HashMap<String, String>> users_query = (HashMap<String, HashMap<String, String>>) dataSnapshot.getValue();
                             String uid = "";
                             String name = "";
                             Boolean exists = false;
-                            for (User user: users_query.values()) {
-                                if (user.email.equals(new_user)) {
-                                    uid = user.id;
-                                    name = user.name;
+                            Log.d("PRUEBAAAAA", Integer.toString(users_query.size()));
+                            for (HashMap<String, String> user: users_query.values()) {
+                                if (user.get("email").equals(new_user)) {
+                                    uid = user.get("id");
+                                    name = user.get("name");
                                     if (ids.contains(uid)) {
                                         exists = true;
                                     }
                                     break;
                                 }
+                                Log.d("QUE PEDOOOOOO", Integer.toString(user.size()));
                             }
                             if (uid.equals("")) {
                                 Toast.makeText(context, "This email does not have an account",

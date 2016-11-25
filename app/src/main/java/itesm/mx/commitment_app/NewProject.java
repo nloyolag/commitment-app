@@ -122,9 +122,8 @@ public class NewProject extends AppCompatActivity {
                     }
 
                     TeamModel team = new TeamModel(name, id, users);
-                    for (String val : users){
-                        Log.d("User", val);
-                    }
+                    team.setCommitments(new HashMap<String, Commitment>());
+
                     mDatabase.child("projects").child(id).setValue(team, new DatabaseReference.CompletionListener() {
 
                         @Override
