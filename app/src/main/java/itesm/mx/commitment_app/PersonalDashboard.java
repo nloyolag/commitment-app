@@ -23,6 +23,8 @@ import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.PieEntry;
 import com.github.mikephil.charting.interfaces.datasets.IPieDataSet;
 import com.github.mikephil.charting.utils.ColorTemplate;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -47,6 +49,7 @@ public class PersonalDashboard extends Fragment {
     MyApplication context;
     String project;
     DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
+    FirebaseAuth mAuth;
 
     public PersonalDashboard() {
         // Required empty public constructor
@@ -58,6 +61,7 @@ public class PersonalDashboard extends Fragment {
 
         surveys = new ArrayList<String>();
         surveyProgress = new ArrayList<Integer>();
+        mAuth = FirebaseAuth.getInstance();
 
         context = (MyApplication) getActivity().getApplicationContext();
         project = context.getProject();
@@ -151,7 +155,7 @@ public class PersonalDashboard extends Fragment {
             int count = 0;
             int aggregate = 0;
             for (Survey survey : commitment.surveys.values()) {
-                if (survey.rating >= 0) {
+                if (survey.rating >= 0 && survey.to.equals(mAuth.getCurrentUser().getUid())) {
                     count++;
                     aggregate += survey.rating;
                 }
