@@ -40,7 +40,8 @@ public class TeamDashboard extends Fragment {
     private ArrayList<String> ids;
     private ArrayList<String> names;
     private ArrayList<Integer> scores;
-    private HashMap<String, User> users;
+    private ArrayList<String> users;
+    private HashMap<String, Commitment> commitments;
     private HashMap<String, Survey> surveys;
     private HashMap<String, Integer> eval_no;
     private HashMap<String, Integer> aggregate;
@@ -51,28 +52,23 @@ public class TeamDashboard extends Fragment {
     private DatabaseReference mDatabase;
     private MyApplication context;
     private String project;
-
-    private Boolean loaded_users;
+    PieChart pieChart;
 
     public TeamDashboard() {
         // Required empty public constructor
     }
 
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        users = new HashMap<String, User>();
+        commitments = new HashMap<String, Commitment>();
         surveys = new HashMap<String, Survey>();
         context = (MyApplication) getActivity().getApplicationContext();
         project = context.getProject();
 
-        loaded_users = false;
-
         mDatabase = FirebaseDatabase.getInstance().getReference();
-        mProjectDatabase = mDatabase.child("projects").child(project).child("commitments");
-        mUserDatabase = mDatabase.child("users");
+
         ids = new ArrayList<String>();
         names = new ArrayList<String>();
         scores = new ArrayList<Integer>();
@@ -83,63 +79,28 @@ public class TeamDashboard extends Fragment {
         View view = inflater.inflate(R.layout.fragment_team_dashboard, container, false);
         listView = (ListView)view.findViewById(R.id.dashboard_list);
 
-        /*mUserDatabase.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                Log.d("ENTRA", "ENTRA");
-                HashMap<String, User> users_query = (HashMap<String, User>) dataSnapshot.getValue();
-                Iterator it = surveys.entrySet().iterator();
-                Log.d("YEAH", users_query.getClass().getName());
-                while (it.hasNext()) {
-                    Map.Entry pair = (Map.Entry)it.next();
-                    Log.d("APP", pair.getKey().toString());
-                    it.remove();
-                }
-                for (User user: users_query.values()) {
-                    if (!users.containsKey(user.id)) {
-                        users.put(user.id, user);
-                    }
-                }
-                loaded_users = true;
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });*/
-
-        /*mProjectDatabase.addChildEventListener(new ChildEventListener() {
+        mDatabase.child("projects").child(project).child("commitments").addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                Commitment commitment = dataSnapshot.getValue(Survey.class);
-                Log.d("NEW SURVEY", survey.id);
-                surveys.put(survey.id, survey);
-                Log.d("SURVEY SIZE", Integer.toString(surveys.size()));
+                Commitment commitment = dataSnapshot.getValue(Commitment.class);
+                Log.d("NEW COMMITMENT", commitment.id);
+                commitments.put(commitment.id, commitment);
+                Log.d("COMMITMENT SIZE", Integer.toString(commitments.size()));
                 populateLists();
-                DashboardList adapter = new DashboardList(getActivity(), names, scores);
-                listView.setAdapter(adapter);
-                listView.invalidateViews();
             }
 
             @Override
             public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-                Survey survey = dataSnapshot.getValue(Survey.class);
-                surveys.put(survey.id, survey);
+                Commitment commitment = dataSnapshot.getValue(Commitment.class);
+                commitments.put(commitment.id, commitment);
                 populateLists();
-                DashboardList adapter = new DashboardList(getActivity(), names, scores);
-                listView.setAdapter(adapter);
-                listView.invalidateViews();
             }
 
             @Override
             public void onChildRemoved(DataSnapshot dataSnapshot) {
-                Survey survey = dataSnapshot.getValue(Survey.class);
-                surveys.remove(survey.id);
+                Commitment commitment = dataSnapshot.getValue(Commitment.class);
+                commitments.remove(commitment.id);
                 populateLists();
-                DashboardList adapter = new DashboardList(getActivity(), names, scores);
-                listView.setAdapter(adapter);
-                listView.invalidateViews();
             }
 
             @Override
@@ -151,11 +112,11 @@ public class TeamDashboard extends Fragment {
             public void onCancelled(DatabaseError databaseError) {
 
             }
-        });*/
+        });
 
         //change with actual progress
         int teamProgress = 90;
-        PieChart pieChart = (PieChart) view.findViewById(R.id.pie_chart);
+        pieChart = (PieChart) view.findViewById(R.id.pie_chart);
         drawPieChart(pieChart, teamProgress);
 
         DashboardList adapter = new DashboardList(getActivity(), names, scores);
@@ -184,28 +145,70 @@ public class TeamDashboard extends Fragment {
     }
 
     public void populateLists() {
-        ids = new ArrayList<String>();
-        names = new ArrayList<String>();
-        scores = new ArrayList<Integer>();
-        eval_no = new HashMap<String, Integer>();
-        aggregate = new HashMap<String, Integer>();
-        Iterator it = surveys.entrySet().iterator();
-        while (it.hasNext()) {
-            Map.Entry pair = (Map.Entry)it.next();
-            Survey survey = (Survey) pair.getValue();
-            //User user = users.get(survey.to);
-            if (!ids.contains(survey.to)) {
-                ids.add(survey.to);
-                //names.add(user.name);
-                scores.add(0);
-                eval_no.put(survey.to, 0);
-                aggregate.put(survey.to, 0);
+        final ArrayList<String> names_inner = new ArrayList<String>();
+        final ArrayList<Integer> scores_inner = new ArrayList<Integer>();
+        final ArrayList<Integer> counts = new ArrayList<Integer>();
+
+        mDatabase.child("projects").child(project).child("users").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                users = (ArrayList<String>) dataSnapshot.getValue();
+
+                mDatabase.child("users").addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        HashMap<String, HashMap<String, String>> users_query = (HashMap<String, HashMap<String, String>>) dataSnapshot.getValue();
+                        for (String user : users) {
+                            names_inner.add(users_query.get(user).get("name"));
+                            scores_inner.add(0);
+                            counts.add(0);
+                        }
+
+                        for (Commitment commitment : commitments.values()) {
+                            for (Survey survey : commitment.surveys.values()) {
+                                if (survey.rating >= 0) {
+                                    int index = users.indexOf(survey.to);
+                                    scores_inner.set(index, scores_inner.get(index) + survey.rating);
+                                    counts.set(index, counts.get(index) + 1);
+                                }
+                            }
+                        }
+
+                        for (int i = 0; i < scores_inner.size(); i++) {
+                            if (counts.get(i) == 0) {
+                                scores_inner.set(i, 0);
+                            } else {
+                                scores_inner.set(i, (int) scores_inner.get(i) / counts.get(i) * 20);
+                            }
+                        }
+
+                        drawPieChart(pieChart, getOverallScore(scores_inner));
+                        DashboardList adapter = new DashboardList(getActivity(), names_inner, scores_inner);
+                        listView.setAdapter(adapter);
+                        listView.invalidateViews();
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+
+                    }
+                });
+
             }
-            int location = ids.indexOf(survey.to);
-            aggregate.put(survey.to, aggregate.get(survey.to) + survey.rating);
-            eval_no.put(survey.to, eval_no.get(survey.to) + 1);
-            scores.set(location, (int) (20 * aggregate.get(survey.to) / eval_no.get(survey.to)));
-            it.remove();
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+    public int getOverallScore(ArrayList<Integer> scores) {
+        int total = 0;
+        for (int score : scores) {
+            total += score;
         }
+        total = (int) total / scores.size();
+        return total;
     }
 }
