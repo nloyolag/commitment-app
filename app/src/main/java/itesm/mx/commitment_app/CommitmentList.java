@@ -1,7 +1,9 @@
 package itesm.mx.commitment_app;
 
 import android.app.Activity;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -88,8 +90,25 @@ public class CommitmentList extends ArrayAdapter<String> {
         deleteButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String idString = ids.get(position);
-                mDatabase.child("projects").child(project).child("commitments").child(idString).removeValue();
+                AlertDialog.Builder dialogConf = new AlertDialog.Builder(context);
+                dialogConf.setTitle("Deleting Commitment");
+                dialogConf.setMessage("Are you ure you want to delete this commitment?");
+                dialogConf.setIcon(R.drawable.ic_delete);
+                dialogConf.setPositiveButton("Delete", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        String idString = ids.get(position);
+                        mDatabase.child("projects").child(project).child("commitments").child(idString).removeValue();
+                    }
+                });
+                dialogConf.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                    }
+                });
+                AlertDialog myDialog = dialogConf.create();
+                myDialog.show();
             }
         });
         return rowView;

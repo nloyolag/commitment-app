@@ -7,8 +7,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
+import android.widget.Button;
 import android.widget.ExpandableListView;
+import android.widget.RatingBar;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.HashMap;
 import java.util.List;
@@ -21,12 +27,21 @@ public class SurveysList extends BaseExpandableListAdapter {
     private Context context;
     private List<String> expandableListTitle;
     private HashMap<String, List<String>> expandableListDetail;
+    private List<String> commitmentId;
+    private HashMap<String, List<String>> surveyId;
+    private String project;
+    DatabaseReference mDatabase;
+
 
     public SurveysList(Context context, List<String> expandableListTitle,
-                                       HashMap<String, List<String>> expandableListDetail) {
+                       HashMap<String, List<String>> expandableListDetail, List<String> commitmentId, HashMap<String, List<String>> surveyId, String project) {
         this.context = context;
         this.expandableListTitle = expandableListTitle;
         this.expandableListDetail = expandableListDetail;
+        this.commitmentId = commitmentId;
+        this.surveyId = surveyId;
+        this.project = project;
+        mDatabase = FirebaseDatabase.getInstance().getReference();
     }
 
     @Override
@@ -35,15 +50,20 @@ public class SurveysList extends BaseExpandableListAdapter {
                 .get(expandedListPosition);
     }
 
+    public Object getSurveyId(int listPosition, int expandedListPosition) {
+        return this.surveyId.get(this.commitmentId.get(listPosition)).get(expandedListPosition);
+    }
+
     @Override
     public long getChildId(int listPosition, int expandedListPosition) {
         return expandedListPosition;
     }
 
     @Override
-    public View getChildView(int listPosition, final int expandedListPosition,
-                             boolean isLastChild, View convertView, ViewGroup parent) {
+    public View getChildView(final int listPosition, final int expandedListPosition,
+                             final boolean isLastChild, View convertView, ViewGroup parent) {
         final String expandedListText = (String) getChild(listPosition, expandedListPosition);
+        final String memberIdText = (String) getSurveyId(listPosition, expandedListPosition);
         if (convertView == null) {
             LayoutInflater layoutInflater = (LayoutInflater) this.context
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -52,6 +72,30 @@ public class SurveysList extends BaseExpandableListAdapter {
         TextView expandedListTextView = (TextView) convertView
                 .findViewById(R.id.survey_member);
         expandedListTextView.setText(expandedListText);
+
+        TextView memberIdView = (TextView) convertView.findViewById(R.id.member_id);
+        memberIdView.setText(memberIdText);
+
+        final RatingBar ratingBar = (RatingBar) convertView.findViewById(R.id.ratingBar);
+        Button done = (Button) convertView.findViewById(R.id.done_button);
+        done.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(ratingBar.getRating()>0) {
+                    HashMap<String, Integer> result = new HashMap<String, Integer>();
+                    result.put(expandedListText, (int)ratingBar.getRating());
+                    v.setTag(result);
+                    Log.d("Result: ", expandedListText + ": " + (int)ratingBar.getRating());
+                    mDatabase.child("projects").child(project).child("commitments").child((String)getCommitmentId(listPosition)).child("surveys").child(memberIdText).child("rating").setValue((int)ratingBar.getRating());
+                    /*expandableListDetail.get(getGroup(listPosition)).remove(getChild(listPosition,expandedListPosition));
+                    if(isLastChild&&expandedListPosition==0) {
+                        expandableListDetail.remove(getGroup(listPosition));
+                        expandableListTitle.remove(getGroup(listPosition));
+                    }*/
+                    notifyDataSetChanged();
+                }
+            }
+        });
         return convertView;
     }
 
@@ -64,6 +108,10 @@ public class SurveysList extends BaseExpandableListAdapter {
     @Override
     public Object getGroup(int listPosition) {
         return this.expandableListTitle.get(listPosition);
+    }
+
+    public Object getCommitmentId(int listPosition) {
+        return this.commitmentId.get(listPosition);
     }
 
     @Override
@@ -89,6 +137,7 @@ public class SurveysList extends BaseExpandableListAdapter {
                 .findViewById(R.id.survey_header);
         listTitleTextView.setTypeface(null, Typeface.BOLD);
         listTitleTextView.setText(listTitle);
+
         return convertView;
     }
 

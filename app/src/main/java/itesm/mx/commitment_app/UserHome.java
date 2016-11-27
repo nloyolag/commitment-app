@@ -82,9 +82,9 @@ public class UserHome extends AppCompatActivity {
                 }
                 UserHomeGrid adapter = new UserHomeGrid(UserHome.this, project_names, project_ids, image_ids);
                 grid.setAdapter(adapter);
+                grid.invalidateViews();
                 if(mProgressDialog!=null&&mProgressDialog.isShowing())
                     mProgressDialog.dismiss();
-                grid.invalidateViews();
             }
 
             @Override
@@ -94,9 +94,9 @@ public class UserHome extends AppCompatActivity {
                 project_names.set(location, team.name);
                 UserHomeGrid adapter = new UserHomeGrid(UserHome.this, project_names, project_ids, image_ids);
                 grid.setAdapter(adapter);
+                grid.invalidateViews();
                 if((mProgressDialog!=null)&&mProgressDialog.isShowing())
                     mProgressDialog.dismiss();
-                grid.invalidateViews();
 
             }
 
@@ -109,9 +109,9 @@ public class UserHome extends AppCompatActivity {
                 image_ids.remove(location);
                 UserHomeGrid adapter = new UserHomeGrid(UserHome.this, project_names, project_ids, image_ids);
                 grid.setAdapter(adapter);
+                grid.invalidateViews();
                 if((mProgressDialog!=null)&&mProgressDialog.isShowing())
                     mProgressDialog.dismiss();
-                grid.invalidateViews();
             }
 
             @Override

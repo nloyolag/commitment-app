@@ -1,6 +1,8 @@
 package itesm.mx.commitment_app;
 
 import android.app.Activity;
+import android.support.v7.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -54,9 +56,27 @@ public class TeamList extends ArrayAdapter<String> {
         deleteButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ids.remove(position);
-                names.remove(position);
-                mDatabase.child("projects").child(project).child("users").setValue(ids);
+                AlertDialog.Builder dialogConf = new AlertDialog.Builder(context);
+                dialogConf.setTitle("Deleting "+ names.get(position));
+                dialogConf.setMessage("Are you ure you want to delete this member?");
+                dialogConf.setIcon(R.drawable.ic_delete);
+                dialogConf.setPositiveButton("Delete", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        ids.remove(position);
+                        names.remove(position);
+                        mDatabase.child("projects").child(project).child("users").setValue(ids);
+                    }
+                });
+                dialogConf.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                    }
+                });
+                AlertDialog myDialog = dialogConf.create();
+                myDialog.show();
+
             }
         });
         return rowView;

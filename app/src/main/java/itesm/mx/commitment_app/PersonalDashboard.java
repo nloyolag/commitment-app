@@ -3,28 +3,19 @@ package itesm.mx.commitment_app;
 
 import android.graphics.Color;
 import android.os.Bundle;
-import android.provider.ContactsContract;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
-import android.widget.ProgressBar;
-import android.widget.TextView;
 
-import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.components.Description;
 import com.github.mikephil.charting.components.Legend;
-import com.github.mikephil.charting.data.Entry;
-import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.PieEntry;
-import com.github.mikephil.charting.interfaces.datasets.IPieDataSet;
-import com.github.mikephil.charting.utils.ColorTemplate;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -32,10 +23,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 
 
 /**
@@ -62,7 +50,6 @@ public class PersonalDashboard extends Fragment {
         surveys = new ArrayList<String>();
         surveyProgress = new ArrayList<Integer>();
         mAuth = FirebaseAuth.getInstance();
-
         context = (MyApplication) getActivity().getApplicationContext();
         project = context.getProject();
         commitments = new ArrayList<Commitment>();
@@ -174,6 +161,8 @@ public class PersonalDashboard extends Fragment {
         for (int i = 0; i < surveyProgress.size(); i++) {
             sum += surveyProgress.get(i);
         }
+        if (surveyProgress.size()==0)
+            return 0;
         sum = (int) sum / surveyProgress.size();
         return sum;
     }

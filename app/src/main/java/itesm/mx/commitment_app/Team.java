@@ -15,8 +15,6 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -27,7 +25,6 @@ import com.roughike.bottombar.OnTabSelectListener;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -134,8 +131,8 @@ public class Team extends AppCompatActivity {
                                 }
                             }
                             mDatabase.child("projects").child(project).child("users").setValue(ids);
-                            Toast.makeText(context, "User added to project!",
-                                    Toast.LENGTH_SHORT).show();
+                            if(!uid.equals(""))
+                                Toast.makeText(context, "User added to project!", Toast.LENGTH_SHORT).show();
                             finish();
                         }
 

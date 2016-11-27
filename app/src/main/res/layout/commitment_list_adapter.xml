@@ -24,6 +24,7 @@
             android:layout_marginStart="12dp"
             android:layout_marginTop="12dp"
             android:layout_marginEnd="12dp"
+            android:layout_marginBottom="12dp"
             android:text="This is an example of a commitment's description to check how it's going to look on the layout." />
     </TableLayout>
     <RelativeLayout
