@@ -12,6 +12,7 @@ public class Commitment {
     public String description;
     public String id;
     public HashMap<String, Survey> surveys;
+    public String survey_time;
 
     public Commitment() {
 
@@ -28,6 +29,10 @@ public class Commitment {
 
     public void setSurveys(HashMap<String, Survey> surveys) {
         this.surveys = surveys;
+    }
+
+    public void setSurveyTime(String survey_time) {
+        this.survey_time = survey_time;
     }
 
 }

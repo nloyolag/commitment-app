@@ -28,14 +28,16 @@ public class CommitmentList extends ArrayAdapter<String> {
     private final ArrayList<String> ids;
     private final ArrayList<String> names;
     private final ArrayList<String> descriptions;
+    private final ArrayList<String> survey_dates;
     DatabaseReference mDatabase;
 
-    public CommitmentList(Activity context, ArrayList<String> ids, ArrayList<String> names, ArrayList<String> descriptions, String project) {
+    public CommitmentList(Activity context, ArrayList<String> ids, ArrayList<String> names, ArrayList<String> descriptions, ArrayList<String> survey_dates, String project) {
         super(context, R.layout.commitment_list_adapter, names);
         this.context = context;
         this.ids = ids;
         this.names = names;
         this.descriptions = descriptions;
+        this.survey_dates = survey_dates;
         this.project = project;
         mDatabase = FirebaseDatabase.getInstance().getReference();
     }
@@ -72,6 +74,7 @@ public class CommitmentList extends ArrayAdapter<String> {
                             commitment_intent.putExtra("id", ids.get(position));
                             commitment_intent.putExtra("name", names.get(position));
                             commitment_intent.putExtra("description", descriptions.get(position));
+                            commitment_intent.putExtra("survey_time", survey_dates.get(position));
                             commitment_intent.putExtra("surveys", surveys);
                             context.startActivity(commitment_intent);
                         }

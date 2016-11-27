@@ -39,6 +39,7 @@ public class Commitments extends AppCompatActivity {
     private ArrayList<String> names;
     private ArrayList<String> descriptions;
     private ArrayList<String> ids;
+    private ArrayList<String> survey_dates;
     private ArrayList<HashMap<String, Survey>> surveys;
 
     private FirebaseAuth mAuth;
@@ -62,6 +63,7 @@ public class Commitments extends AppCompatActivity {
         project = context.getProject();
         names = new ArrayList<String>();
         descriptions = new ArrayList<String>();
+        survey_dates = new ArrayList<String>();
         ids = new ArrayList<String>();
         surveys = new ArrayList<HashMap<String, Survey>>();
 
@@ -81,9 +83,10 @@ public class Commitments extends AppCompatActivity {
                     ids.add(commitment.id);
                     names.add(commitment.name);
                     descriptions.add(commitment.description);
+                    survey_dates.add(commitment.survey_time);
                     surveys.add(commitment.surveys);
                 }
-                adapter = new CommitmentList(Commitments.this, ids, names, descriptions, project);
+                adapter = new CommitmentList(Commitments.this, ids, names, descriptions, survey_dates, project);
                 commitment_list.setAdapter(adapter);
                 commitment_list.invalidateViews();
             }
@@ -94,8 +97,9 @@ public class Commitments extends AppCompatActivity {
                 int location = ids.indexOf(commitment.id);
                 names.set(location, commitment.name);
                 descriptions.set(location, commitment.description);
+                survey_dates.set(location, commitment.survey_time);
                 surveys.set(location, commitment.surveys);
-                adapter = new CommitmentList(Commitments.this, ids, names, descriptions, project);
+                adapter = new CommitmentList(Commitments.this, ids, names, descriptions, survey_dates, project);
                 commitment_list.setAdapter(adapter);
                 commitment_list.invalidateViews();
             }
@@ -107,8 +111,9 @@ public class Commitments extends AppCompatActivity {
                 ids.remove(location);
                 names.remove(location);
                 descriptions.remove(location);
+                survey_dates.remove(location);
                 surveys.remove(location);
-                adapter = new CommitmentList(Commitments.this, ids, names, descriptions, project);
+                adapter = new CommitmentList(Commitments.this, ids, names, descriptions, survey_dates, project);
                 commitment_list.setAdapter(adapter);
                 commitment_list.invalidateViews();
             }

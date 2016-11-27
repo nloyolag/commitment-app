@@ -30,6 +30,7 @@ public class EditCommitment extends AppCompatActivity {
     private String description;
     private String id;
     private String project;
+    private String survey_time;
     private HashMap<String, Survey> surveys;
 
     private EditText name_field;
@@ -65,6 +66,7 @@ public class EditCommitment extends AppCompatActivity {
             name = intent.getStringExtra("name");
             description = intent.getStringExtra("description");
             surveys = (HashMap<String, Survey>)intent.getSerializableExtra("surveys");
+            survey_time = intent.getStringExtra("survey_time");
             id_field.setText(id);
             name_field.setText(name);
             description_field.setText(description);
@@ -114,6 +116,9 @@ public class EditCommitment extends AppCompatActivity {
                                 Commitment commitment = new Commitment(name, description);
                                 commitment.setId(id);
                                 commitment.setSurveys(surveys);
+                                Long tsLong = System.currentTimeMillis() / 1000;
+                                String ts = tsLong.toString();
+                                commitment.setSurveyTime(ts);
                                 mDatabase.child("projects").child(project).child("commitments").child(id).setValue(commitment, new DatabaseReference.CompletionListener() {
                                     @Override
                                     public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
@@ -137,6 +142,7 @@ public class EditCommitment extends AppCompatActivity {
                         Commitment commitment = new Commitment(name, description);
                         commitment.setId(id);
                         commitment.setSurveys(surveys);
+                        commitment.setSurveyTime(survey_time);
                         mDatabase.child("projects").child(project).child("commitments").child(id).setValue(commitment, new DatabaseReference.CompletionListener() {
                             @Override
                             public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
