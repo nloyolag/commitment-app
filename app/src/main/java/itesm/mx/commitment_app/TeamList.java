@@ -11,6 +11,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -28,7 +29,8 @@ public class TeamList extends ArrayAdapter<String> {
     private final ArrayList<String> names;
     DatabaseReference mDatabase;
 
-    public TeamList(Activity context, ArrayList<String> ids, ArrayList<String> names, String project) {
+    public TeamList(Activity context, ArrayList<String> ids, ArrayList<String> names,
+                    String project) {
         super(context, R.layout.team_list_adapter, names);
         this.context = context;
         this.ids = ids;
@@ -66,6 +68,8 @@ public class TeamList extends ArrayAdapter<String> {
                         ids.remove(position);
                         names.remove(position);
                         mDatabase.child("projects").child(project).child("users").setValue(ids);
+                        Toast.makeText(context,"Succesfully deleted member: " + names.get(position),
+                                Toast.LENGTH_SHORT).show();
                     }
                 });
                 dialogConf.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {

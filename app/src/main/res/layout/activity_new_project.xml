@@ -15,7 +15,7 @@
         android:id="@+id/newProject"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="TextView"
+        android:text="Create New Project"
         android:textAlignment="center"
         android:textAppearance="@android:style/TextAppearance.Material.Title"
         android:textSize="24sp"

@@ -47,6 +47,7 @@ public class PersonalDashboard extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
+
         surveys = new ArrayList<String>();
         surveyProgress = new ArrayList<Integer>();
         mAuth = FirebaseAuth.getInstance();

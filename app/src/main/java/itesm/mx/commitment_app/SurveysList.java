@@ -34,7 +34,8 @@ public class SurveysList extends BaseExpandableListAdapter {
 
 
     public SurveysList(Context context, List<String> expandableListTitle,
-                       HashMap<String, List<String>> expandableListDetail, List<String> commitmentId, HashMap<String, List<String>> surveyId, String project) {
+                       HashMap<String, List<String>> expandableListDetail, List<String> commitmentId,
+                       HashMap<String, List<String>> surveyId, String project) {
         this.context = context;
         this.expandableListTitle = expandableListTitle;
         this.expandableListDetail = expandableListDetail;
@@ -82,18 +83,15 @@ public class SurveysList extends BaseExpandableListAdapter {
             @Override
             public void onClick(View v) {
                 if(ratingBar.getRating()>0) {
-                    HashMap<String, Integer> result = new HashMap<String, Integer>();
-                    result.put(expandedListText, (int)ratingBar.getRating());
-                    v.setTag(result);
                     Log.d("Result: ", expandedListText + ": " + (int)ratingBar.getRating());
-                    mDatabase.child("projects").child(project).child("commitments").child((String)getCommitmentId(listPosition)).child("surveys").child(memberIdText).child("rating").setValue((int)ratingBar.getRating());
-                    /*expandableListDetail.get(getGroup(listPosition)).remove(getChild(listPosition,expandedListPosition));
-                    if(isLastChild&&expandedListPosition==0) {
-                        expandableListDetail.remove(getGroup(listPosition));
-                        expandableListTitle.remove(getGroup(listPosition));
-                    }*/
+                    mDatabase.child("projects").child(project).child("commitments").
+                            child((String)getCommitmentId(listPosition)).child("surveys").
+                            child(memberIdText).child("rating").setValue((int)ratingBar.getRating());
                     notifyDataSetChanged();
                 }
+                else
+                    Toast.makeText(context, "The rating must be between 1 and 5 stars",
+                            Toast.LENGTH_SHORT).show();
             }
         });
         return convertView;

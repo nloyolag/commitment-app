@@ -58,84 +58,86 @@ public class Dashboard extends AppCompatActivity {
         project = context.getProject();
         mDatabase = FirebaseDatabase.getInstance().getReference();
 
-        mDatabase.child("projects").child(project).child("commitments").addChildEventListener(new ChildEventListener() {
-            @Override
-            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                Commitment commitment = dataSnapshot.getValue(Commitment.class);
-                Calendar cal = Calendar.getInstance();
-                TimeZone tz = cal.getTimeZone();//get your local time zone.
-                SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy hh:mm a");
-                sdf.setTimeZone(tz);//set time zone.
-                String localTime = sdf.format(new Date(Long.parseLong(commitment.survey_time) * 1000));
-                Date date = new Date();
-                try {
-                    date = sdf.parse(localTime);
-                } catch (ParseException e) {
-                    e.printStackTrace();
-                }
+//        if(project!=null) {
+            mDatabase.child("projects").child(project).child("commitments").addChildEventListener(new ChildEventListener() {
+                @Override
+                public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                    Commitment commitment = dataSnapshot.getValue(Commitment.class);
+                    Calendar cal = Calendar.getInstance();
+                    TimeZone tz = cal.getTimeZone();//get your local time zone.
+                    SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy hh:mm a");
+                    sdf.setTimeZone(tz);//set time zone.
+                    String localTime = sdf.format(new Date(Long.parseLong(commitment.survey_time) * 1000));
+                    Date date = new Date();
+                    try {
+                        date = sdf.parse(localTime);
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                    }
 
-                Calendar currentDate = new GregorianCalendar();
-                int year1 = currentDate.get(Calendar.YEAR);
-                int week1 = currentDate.get(Calendar.WEEK_OF_YEAR);
+                    Calendar currentDate = new GregorianCalendar();
+                    int year1 = currentDate.get(Calendar.YEAR);
+                    int week1 = currentDate.get(Calendar.WEEK_OF_YEAR);
 
-                Calendar surveyDate = new GregorianCalendar();
-                surveyDate.setTime(date);
-                int year2 = surveyDate.get(Calendar.YEAR);
-                int week2 = surveyDate.get(Calendar.WEEK_OF_YEAR);
+                    Calendar surveyDate = new GregorianCalendar();
+                    surveyDate.setTime(date);
+                    int year2 = surveyDate.get(Calendar.YEAR);
+                    int week2 = surveyDate.get(Calendar.WEEK_OF_YEAR);
 
-                if (year1 > year2 || (year1 == year2 && week1 > week2)) {
-                    Long tsLong = System.currentTimeMillis() / 1000;
-                    String ts = tsLong.toString();
-                    final HashMap<String, Survey> surveys = commitment.surveys;
-                    final String commitment_id = commitment.id;
-                    mDatabase.child("projects").child(project).child("commitments").child(commitment.id).child("survey_time").setValue(ts);
-                    mDatabase.child("projects").child(project).child("users").addListenerForSingleValueEvent(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(DataSnapshot dataSnapshot) {
-                            HashMap<String, Survey> new_surveys = new HashMap<String, Survey>();
-                            ArrayList<String> users = (ArrayList<String>) dataSnapshot.getValue();
-                            for (String from : users) {
-                                for (String to : users) {
-                                    if (!from.equals(to)) {
-                                        String uid = UUID.randomUUID().toString();
-                                        Survey survey = new Survey(from, to, -1, uid);
-                                        new_surveys.put(uid, survey);
+                    if (year1 > year2 || (year1 == year2 && week1 > week2)) {
+                        Long tsLong = System.currentTimeMillis() / 1000;
+                        String ts = tsLong.toString();
+                        final HashMap<String, Survey> surveys = commitment.surveys;
+                        final String commitment_id = commitment.id;
+                        mDatabase.child("projects").child(project).child("commitments").child(commitment.id).child("survey_time").setValue(ts);
+                        mDatabase.child("projects").child(project).child("users").addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(DataSnapshot dataSnapshot) {
+                                HashMap<String, Survey> new_surveys = new HashMap<String, Survey>();
+                                ArrayList<String> users = (ArrayList<String>) dataSnapshot.getValue();
+                                for (String from : users) {
+                                    for (String to : users) {
+                                        if (!from.equals(to)) {
+                                            String uid = UUID.randomUUID().toString();
+                                            Survey survey = new Survey(from, to, -1, uid);
+                                            new_surveys.put(uid, survey);
+                                        }
                                     }
                                 }
+                                new_surveys.putAll(surveys);
+                                mDatabase.child("projects").child(project).child("commitments").child(commitment_id).child("surveys").setValue(new_surveys);
                             }
-                            new_surveys.putAll(surveys);
-                            mDatabase.child("projects").child(project).child("commitments").child(commitment_id).child("surveys").setValue(new_surveys);
-                        }
 
-                        @Override
-                        public void onCancelled(DatabaseError databaseError) {
+                            @Override
+                            public void onCancelled(DatabaseError databaseError) {
 
-                        }
-                    });
+                            }
+                        });
+                    }
+
                 }
 
-            }
+                @Override
+                public void onChildChanged(DataSnapshot dataSnapshot, String s) {
 
-            @Override
-            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+                }
 
-            }
+                @Override
+                public void onChildRemoved(DataSnapshot dataSnapshot) {
 
-            @Override
-            public void onChildRemoved(DataSnapshot dataSnapshot) {
+                }
 
-            }
+                @Override
+                public void onChildMoved(DataSnapshot dataSnapshot, String s) {
 
-            @Override
-            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+                }
 
-            }
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
 
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
+                }
+            });
+//        }
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.tool_bar);
         setSupportActionBar(toolbar);

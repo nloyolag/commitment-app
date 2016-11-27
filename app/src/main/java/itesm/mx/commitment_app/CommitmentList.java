@@ -33,7 +33,9 @@ public class CommitmentList extends ArrayAdapter<String> {
     private final ArrayList<String> survey_dates;
     DatabaseReference mDatabase;
 
-    public CommitmentList(Activity context, ArrayList<String> ids, ArrayList<String> names, ArrayList<String> descriptions, ArrayList<String> survey_dates, String project) {
+    public CommitmentList(Activity context, ArrayList<String> ids, ArrayList<String> names,
+                          ArrayList<String> descriptions, ArrayList<String> survey_dates,
+                          String project) {
         super(context, R.layout.commitment_list_adapter, names);
         this.context = context;
         this.ids = ids;
@@ -68,10 +70,13 @@ public class CommitmentList extends ArrayAdapter<String> {
         editButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mDatabase.child("projects").child(project).child("commitments").child(ids.get(position)).child("surveys").addListenerForSingleValueEvent(new ValueEventListener() {
+                mDatabase.child("projects").child(project).child("commitments").
+                        child(ids.get(position)).child("surveys").
+                        addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
                         public void onDataChange(DataSnapshot dataSnapshot) {
-                            HashMap<String, Survey> surveys = (HashMap<String, Survey>) dataSnapshot.getValue();
+                            HashMap<String, Survey> surveys =
+                                    (HashMap<String, Survey>) dataSnapshot.getValue();
                             Intent commitment_intent = new Intent(context, EditCommitment.class);
                             commitment_intent.putExtra("id", ids.get(position));
                             commitment_intent.putExtra("name", names.get(position));
@@ -98,7 +103,8 @@ public class CommitmentList extends ArrayAdapter<String> {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         String idString = ids.get(position);
-                        mDatabase.child("projects").child(project).child("commitments").child(idString).removeValue();
+                        mDatabase.child("projects").child(project).child("commitments").
+                                child(idString).removeValue();
                     }
                 });
                 dialogConf.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {

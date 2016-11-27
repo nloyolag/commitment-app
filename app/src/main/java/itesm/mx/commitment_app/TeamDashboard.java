@@ -66,7 +66,6 @@ public class TeamDashboard extends Fragment {
         surveys = new HashMap<String, Survey>();
         context = (MyApplication) getActivity().getApplicationContext();
         project = context.getProject();
-
         mDatabase = FirebaseDatabase.getInstance().getReference();
 
         ids = new ArrayList<String>();
