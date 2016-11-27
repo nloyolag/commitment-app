@@ -77,42 +77,44 @@ public class TeamDashboard extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_team_dashboard, container, false);
         listView = (ListView)view.findViewById(R.id.dashboard_list);
+        if (project==null)
+            onCreate(savedInstanceState);
+        if(project!=null) {
+            mDatabase.child("projects").child(project).child("commitments").addChildEventListener(new ChildEventListener() {
+                @Override
+                public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                    Commitment commitment = dataSnapshot.getValue(Commitment.class);
+                    Log.d("NEW COMMITMENT", commitment.id);
+                    commitments.put(commitment.id, commitment);
+                    Log.d("COMMITMENT SIZE", Integer.toString(commitments.size()));
+                    populateLists();
+                }
 
-        mDatabase.child("projects").child(project).child("commitments").addChildEventListener(new ChildEventListener() {
-            @Override
-            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                Commitment commitment = dataSnapshot.getValue(Commitment.class);
-                Log.d("NEW COMMITMENT", commitment.id);
-                commitments.put(commitment.id, commitment);
-                Log.d("COMMITMENT SIZE", Integer.toString(commitments.size()));
-                populateLists();
-            }
+                @Override
+                public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+                    Commitment commitment = dataSnapshot.getValue(Commitment.class);
+                    commitments.put(commitment.id, commitment);
+                    populateLists();
+                }
 
-            @Override
-            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-                Commitment commitment = dataSnapshot.getValue(Commitment.class);
-                commitments.put(commitment.id, commitment);
-                populateLists();
-            }
+                @Override
+                public void onChildRemoved(DataSnapshot dataSnapshot) {
+                    Commitment commitment = dataSnapshot.getValue(Commitment.class);
+                    commitments.remove(commitment.id);
+                    populateLists();
+                }
 
-            @Override
-            public void onChildRemoved(DataSnapshot dataSnapshot) {
-                Commitment commitment = dataSnapshot.getValue(Commitment.class);
-                commitments.remove(commitment.id);
-                populateLists();
-            }
+                @Override
+                public void onChildMoved(DataSnapshot dataSnapshot, String s) {
 
-            @Override
-            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+                }
 
-            }
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
 
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
-
+                }
+            });
+        }
         //change with actual progress
         int teamProgress = 90;
         pieChart = (PieChart) view.findViewById(R.id.pie_chart);
@@ -135,7 +137,7 @@ public class TeamDashboard extends Fragment {
         pieChart.setData(data);
         pieChart.setCenterText(""+myProgress);
         pieChart.setCenterTextSize(24);
-        dataSet.setColors(getResources().getColor(R.color.colorAccent),Color.LTGRAY);
+        dataSet.setColors(Color.rgb(255,64,129),Color.LTGRAY);
         dataSet.setValueTextSize(0);
         Legend legend = pieChart.getLegend();
         legend.setEnabled(false);

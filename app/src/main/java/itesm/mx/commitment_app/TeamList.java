@@ -65,11 +65,12 @@ public class TeamList extends ArrayAdapter<String> {
                 dialogConf.setPositiveButton("Delete", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
+                        Toast.makeText(context,"Succesfully deleted member: " + names.get(position),
+                                Toast.LENGTH_SHORT).show();
                         ids.remove(position);
                         names.remove(position);
                         mDatabase.child("projects").child(project).child("users").setValue(ids);
-                        Toast.makeText(context,"Succesfully deleted member: " + names.get(position),
-                                Toast.LENGTH_SHORT).show();
+
                     }
                 });
                 dialogConf.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {

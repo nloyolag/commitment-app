@@ -58,36 +58,40 @@ public class Team extends AppCompatActivity {
         context = (MyApplication) getApplicationContext();
         project = context.getProject();
         mDatabase = FirebaseDatabase.getInstance().getReference();
+        if (project==null)
+            onCreate(savedInstanceState);
+        if(project!=null) {
+            mDatabase.child("projects").child(project).addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    TeamModel team = dataSnapshot.getValue(TeamModel.class);
+                    ids = (ArrayList<String>) team.users;
+                    names = new ArrayList<String>();
+                    for (String id : ids) {
+                        mDatabase.child("users").child(id).child("name").addValueEventListener(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(DataSnapshot dataSnapshot) {
+                                String name = (String) dataSnapshot.getValue();
+                                names.add(name);
+                            }
 
-        mDatabase.child("projects").child(project).addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                TeamModel team = dataSnapshot.getValue(TeamModel.class);
-                ids = (ArrayList<String>) team.users;
-                names = new ArrayList<String>();
-                for (String id : ids) {
-                    mDatabase.child("users").child(id).child("name").addValueEventListener(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(DataSnapshot dataSnapshot) {
-                            String name = (String) dataSnapshot.getValue();
-                            names.add(name);
-                        }
-                        @Override
-                        public void onCancelled(DatabaseError databaseError) {
-                        }
-                    });
+                            @Override
+                            public void onCancelled(DatabaseError databaseError) {
+                            }
+                        });
+                    }
+                    TeamList adapter = new TeamList(Team.this, ids, names, project);
+                    team_list.setAdapter(adapter);
+                    team_list.invalidateViews();
                 }
-                TeamList adapter = new TeamList(Team.this, ids, names, project);
-                team_list.setAdapter(adapter);
-                team_list.invalidateViews();
-            }
 
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-                Toast.makeText(context, "An error ocurred while loading the team members",
-                        Toast.LENGTH_SHORT).show();
-            }
-        });
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+                    Toast.makeText(context, "An error ocurred while loading the team members",
+                            Toast.LENGTH_SHORT).show();
+                }
+            });
+        }
 
         submit_new_user_button.setOnClickListener(new View.OnClickListener() {
             @Override

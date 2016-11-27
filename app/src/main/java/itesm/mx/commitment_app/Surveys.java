@@ -82,7 +82,9 @@ public class Surveys extends AppCompatActivity {
 
             }
         });
-//        if (project!=null) {
+        if (project==null)
+            onCreate(savedInstanceState);
+        if (project!=null) {
             mDatabase.child("projects").child(project).child("commitments").addChildEventListener(new ChildEventListener() {
                 @Override
                 public void onChildAdded(DataSnapshot dataSnapshot, String s) {
@@ -121,7 +123,7 @@ public class Surveys extends AppCompatActivity {
 
 
 
-//    }
+    }
 
     public void populateLists() {
 

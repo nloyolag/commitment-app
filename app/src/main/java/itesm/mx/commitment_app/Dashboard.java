@@ -57,8 +57,9 @@ public class Dashboard extends AppCompatActivity {
         context = (MyApplication) getApplicationContext();
         project = context.getProject();
         mDatabase = FirebaseDatabase.getInstance().getReference();
-
-//        if(project!=null) {
+        if (project==null)
+            onCreate(savedInstanceState);
+        if(project!=null) {
             mDatabase.child("projects").child(project).child("commitments").addChildEventListener(new ChildEventListener() {
                 @Override
                 public void onChildAdded(DataSnapshot dataSnapshot, String s) {
@@ -137,7 +138,7 @@ public class Dashboard extends AppCompatActivity {
 
                 }
             });
-//        }
+        }
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.tool_bar);
         setSupportActionBar(toolbar);

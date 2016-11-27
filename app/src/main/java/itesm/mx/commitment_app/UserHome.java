@@ -91,10 +91,12 @@ public class UserHome extends AppCompatActivity {
             public void onChildChanged(DataSnapshot dataSnapshot, String s) {
                 TeamModel team = dataSnapshot.getValue(TeamModel.class);
                 int location = project_ids.indexOf(team.id);
-                project_names.set(location, team.name);
-                UserHomeGrid adapter = new UserHomeGrid(UserHome.this, project_names, project_ids, image_ids);
-                grid.setAdapter(adapter);
-                grid.invalidateViews();
+                if (location!=-1) {
+                    project_names.set(location, team.name);
+                    UserHomeGrid adapter = new UserHomeGrid(UserHome.this, project_names, project_ids, image_ids);
+                    grid.setAdapter(adapter);
+                    grid.invalidateViews();
+                }
                 if((mProgressDialog!=null)&&mProgressDialog.isShowing())
                     mProgressDialog.dismiss();
 

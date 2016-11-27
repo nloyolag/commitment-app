@@ -74,61 +74,64 @@ public class Commitments extends AppCompatActivity {
                 startActivity(new Intent(Commitments.this, EditCommitment.class));
             }
         });
-
-        mDatabase.child("projects").child(project).child("commitments").addChildEventListener(new ChildEventListener() {
-            @Override
-            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                Commitment commitment = dataSnapshot.getValue(Commitment.class);
-                if (!ids.contains(commitment.id)) {
-                    ids.add(commitment.id);
-                    names.add(commitment.name);
-                    descriptions.add(commitment.description);
-                    survey_dates.add(commitment.survey_time);
-                    surveys.add(commitment.surveys);
+        if (project==null)
+            onCreate(savedInstanceState);
+        if(project!=null) {
+            mDatabase.child("projects").child(project).child("commitments").addChildEventListener(new ChildEventListener() {
+                @Override
+                public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                    Commitment commitment = dataSnapshot.getValue(Commitment.class);
+                    if (!ids.contains(commitment.id)) {
+                        ids.add(commitment.id);
+                        names.add(commitment.name);
+                        descriptions.add(commitment.description);
+                        survey_dates.add(commitment.survey_time);
+                        surveys.add(commitment.surveys);
+                    }
+                    adapter = new CommitmentList(Commitments.this, ids, names, descriptions, survey_dates, project);
+                    commitment_list.setAdapter(adapter);
+                    commitment_list.invalidateViews();
                 }
-                adapter = new CommitmentList(Commitments.this, ids, names, descriptions, survey_dates, project);
-                commitment_list.setAdapter(adapter);
-                commitment_list.invalidateViews();
-            }
 
-            @Override
-            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-                Commitment commitment = dataSnapshot.getValue(Commitment.class);
-                int location = ids.indexOf(commitment.id);
-                names.set(location, commitment.name);
-                descriptions.set(location, commitment.description);
-                survey_dates.set(location, commitment.survey_time);
-                surveys.set(location, commitment.surveys);
-                adapter = new CommitmentList(Commitments.this, ids, names, descriptions, survey_dates, project);
-                commitment_list.setAdapter(adapter);
-                commitment_list.invalidateViews();
-            }
+                @Override
+                public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+                    Commitment commitment = dataSnapshot.getValue(Commitment.class);
+                    int location = ids.indexOf(commitment.id);
+                    names.set(location, commitment.name);
+                    descriptions.set(location, commitment.description);
+                    survey_dates.set(location, commitment.survey_time);
+                    surveys.set(location, commitment.surveys);
+                    adapter = new CommitmentList(Commitments.this, ids, names, descriptions, survey_dates, project);
+                    commitment_list.setAdapter(adapter);
+                    commitment_list.invalidateViews();
+                }
 
-            @Override
-            public void onChildRemoved(DataSnapshot dataSnapshot) {
-                Commitment commitment = dataSnapshot.getValue(Commitment.class);
-                int location = ids.indexOf(commitment.id);
-                ids.remove(location);
-                names.remove(location);
-                descriptions.remove(location);
-                survey_dates.remove(location);
-                surveys.remove(location);
-                adapter = new CommitmentList(Commitments.this, ids, names, descriptions, survey_dates, project);
-                commitment_list.setAdapter(adapter);
-                commitment_list.invalidateViews();
-            }
+                @Override
+                public void onChildRemoved(DataSnapshot dataSnapshot) {
+                    Commitment commitment = dataSnapshot.getValue(Commitment.class);
+                    int location = ids.indexOf(commitment.id);
+                    ids.remove(location);
+                    names.remove(location);
+                    descriptions.remove(location);
+                    survey_dates.remove(location);
+                    surveys.remove(location);
+                    adapter = new CommitmentList(Commitments.this, ids, names, descriptions, survey_dates, project);
+                    commitment_list.setAdapter(adapter);
+                    commitment_list.invalidateViews();
+                }
 
-            @Override
-            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+                @Override
+                public void onChildMoved(DataSnapshot dataSnapshot, String s) {
 
-            }
+                }
 
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-                Toast.makeText(context, "An error ocurred while loading the commitments",
-                        Toast.LENGTH_SHORT).show();
-            }
-        });
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+                    Toast.makeText(context, "An error ocurred while loading the commitments",
+                            Toast.LENGTH_SHORT).show();
+                }
+            });
+        }
 
         final BottomBar bottomBar = (BottomBar) findViewById(R.id.bottomBar);
         bottomBar.setDefaultTab(R.id.tab_commitments);
