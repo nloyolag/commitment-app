@@ -20,6 +20,7 @@ public class Settings extends AppCompatActivity {
     ListView listView;
     String [] items = {"Change Project","Project Settings", "User Settings", "Logout"};
     int [] colors = {0,0,0, Color.RED};
+    Intent intent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,8 +46,13 @@ public class Settings extends AppCompatActivity {
                         break;
                     case 3:
                         FirebaseAuth.getInstance().signOut();
-                        if (FirebaseAuth.getInstance().getCurrentUser()==null)
-                            startActivity(new Intent(Settings.this, Login.class));
+                        if (FirebaseAuth.getInstance().getCurrentUser()==null) {
+                            intent = new Intent(Settings.this, Login.class);
+                            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                            startActivity(intent);
+                            finish();
+                        }
                         break;
                 }
             }

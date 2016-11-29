@@ -77,8 +77,7 @@ public class TeamDashboard extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_team_dashboard, container, false);
         listView = (ListView)view.findViewById(R.id.dashboard_list);
-        if (project==null)
-            onCreate(savedInstanceState);
+
         if(project!=null) {
             mDatabase.child("projects").child(project).child("commitments").addChildEventListener(new ChildEventListener() {
                 @Override
@@ -179,7 +178,7 @@ public class TeamDashboard extends Fragment {
                             if (counts.get(i) == 0) {
                                 scores_inner.set(i, 0);
                             } else {
-                                scores_inner.set(i, (int) scores_inner.get(i) / counts.get(i) * 20);
+                                scores_inner.set(i, (scores_inner.get(i) *20) / counts.get(i));
                             }
                         }
 

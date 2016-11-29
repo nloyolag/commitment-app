@@ -58,8 +58,7 @@ public class Team extends AppCompatActivity {
         context = (MyApplication) getApplicationContext();
         project = context.getProject();
         mDatabase = FirebaseDatabase.getInstance().getReference();
-        if (project==null)
-            onCreate(savedInstanceState);
+
         if(project!=null) {
             mDatabase.child("projects").child(project).addValueEventListener(new ValueEventListener() {
                 @Override

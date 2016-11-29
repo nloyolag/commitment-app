@@ -74,8 +74,7 @@ public class Commitments extends AppCompatActivity {
                 startActivity(new Intent(Commitments.this, EditCommitment.class));
             }
         });
-        if (project==null)
-            onCreate(savedInstanceState);
+
         if(project!=null) {
             mDatabase.child("projects").child(project).child("commitments").addChildEventListener(new ChildEventListener() {
                 @Override
@@ -92,6 +91,7 @@ public class Commitments extends AppCompatActivity {
                     commitment_list.setAdapter(adapter);
                     commitment_list.invalidateViews();
                 }
+
 
                 @Override
                 public void onChildChanged(DataSnapshot dataSnapshot, String s) {

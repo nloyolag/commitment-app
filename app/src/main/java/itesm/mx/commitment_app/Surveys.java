@@ -82,8 +82,7 @@ public class Surveys extends AppCompatActivity {
 
             }
         });
-        if (project==null)
-            onCreate(savedInstanceState);
+
         if (project!=null) {
             mDatabase.child("projects").child(project).child("commitments").addChildEventListener(new ChildEventListener() {
                 @Override

@@ -59,8 +59,7 @@ public class PersonalDashboard extends Fragment {
         View view = inflater.inflate(R.layout.fragment_personal_dashboard, container, false);
         listView = (ListView)view.findViewById(R.id.dashboard_list);
         final PieChart pieChart = (PieChart) view.findViewById(R.id.pie_chart);
-        if (project==null)
-            onCreate(savedInstanceState);
+
         if(project!=null) {
             mDatabase.child("projects").child(project).child("commitments").addChildEventListener(new ChildEventListener() {
                 @Override

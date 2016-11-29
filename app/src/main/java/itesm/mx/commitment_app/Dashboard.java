@@ -57,8 +57,7 @@ public class Dashboard extends AppCompatActivity {
         context = (MyApplication) getApplicationContext();
         project = context.getProject();
         mDatabase = FirebaseDatabase.getInstance().getReference();
-        if (project==null)
-            onCreate(savedInstanceState);
+
         if(project!=null) {
             mDatabase.child("projects").child(project).child("commitments").addChildEventListener(new ChildEventListener() {
                 @Override
