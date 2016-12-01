@@ -128,7 +128,10 @@ public class PersonalDashboard extends Fragment {
         PieData data = new PieData(dataSet);
         pieChart.setData(data);
         pieChart.setCenterText(""+myProgress);
-        pieChart.setCenterTextSize(24);
+        if (myProgress == 100)
+            pieChart.setCenterTextSize(14);
+        else
+            pieChart.setCenterTextSize(24);
         dataSet.setColors(Color.rgb(255,64,129),Color.LTGRAY);
         dataSet.setValueTextSize(0);
         Legend legend = pieChart.getLegend();
